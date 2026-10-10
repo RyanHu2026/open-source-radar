@@ -241,6 +241,79 @@
     .refresh-results.loading svg { animation: spin 800ms linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    .saved-workspace { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: end; margin: 0 0 15px; padding: 18px 20px; border: 1px solid rgba(115,217,233,0.2); border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(21, 50, 69, 0.76), rgba(16, 34, 52, 0.55)); }
+    .saved-workspace[hidden], .saved-toolbar[hidden] { display: none; }
+    .saved-workspace h3 { margin-top: 5px; font-size: 18px; letter-spacing: -0.04em; }
+    .saved-workspace p { max-width: 560px; margin-top: 7px; color: var(--muted-strong); font-size: 12px; line-height: 1.6; }
+    .saved-summary { display: flex; gap: 9px; }
+    .saved-summary-item { min-width: 82px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(5,14,24,0.32); }
+    .saved-summary-item strong { display: block; color: var(--lime); font-size: 19px; letter-spacing: -0.04em; }
+    .saved-summary-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .saved-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
+    .saved-status-filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .saved-status-btn { border: 1px solid var(--line); color: var(--muted); background: transparent; padding: 8px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+    .saved-status-btn:hover { color: var(--text); }
+    .saved-status-btn.active { color: var(--cyan); border-color: rgba(115,217,233,0.36); background: var(--cyan-soft); }
+    .saved-export { border: 1px solid var(--line); color: var(--muted-strong); background: transparent; padding: 8px 11px; border-radius: 8px; font-size: 11px; cursor: pointer; }
+    .saved-export:hover { color: var(--lime); border-color: rgba(200,242,105,0.36); }
+    .saved-card-tools { display: grid; gap: 8px; margin-top: 13px; padding-top: 13px; border-top: 1px solid var(--line); }
+    .saved-status-label { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 10px; }
+    .saved-status-select { max-width: 132px; border: 1px solid var(--line); border-radius: 7px; padding: 6px 7px; color: var(--cyan); background: var(--panel-soft); font-size: 10px; outline: none; }
+    .saved-note-input { width: 100%; min-height: 48px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 8px 9px; color: var(--muted-strong); background: var(--panel-soft); font: 11px/1.5 var(--sans); outline: none; }
+    .saved-note-input:focus { border-color: var(--cyan); }
+    .compare-workspace { margin-bottom: 16px; padding: 20px; border: 1px solid rgba(115,217,233,0.2); border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(21, 50, 69, 0.76), rgba(16, 34, 52, 0.55)); }
+    .compare-workspace[hidden] { display: none; }
+    .compare-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+    .compare-head h3 { margin-top: 5px; font-size: 18px; letter-spacing: -0.04em; }
+    .compare-head p { max-width: 640px; margin-top: 7px; color: var(--muted-strong); font-size: 12px; line-height: 1.6; }
+    .compare-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .compare-action { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--muted-strong); background: transparent; font-size: 11px; cursor: pointer; }
+    .compare-action:hover { color: var(--lime); border-color: rgba(200,242,105,0.36); }
+    .compare-selection { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
+    .compare-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border: 1px solid rgba(115,217,233,0.28); border-radius: 8px; color: var(--cyan); background: var(--cyan-soft); font-size: 11px; }
+    .compare-chip button { border: 0; padding: 0; color: inherit; background: transparent; cursor: pointer; font-size: 14px; line-height: 1; }
+    .compare-table-wrap { margin-top: 17px; overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: rgba(5,14,24,0.28); }
+    .compare-table { min-width: 680px; display: grid; grid-template-columns: 145px repeat(var(--compare-count), minmax(150px, 1fr)); }
+    .compare-cell { min-height: 43px; padding: 11px 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted-strong); font-size: 12px; line-height: 1.45; }
+    .compare-cell:nth-child(n) { border-right: 1px solid var(--line); }
+    .compare-cell.label { color: var(--muted); font-size: 10px; font-weight: 700; }
+    .compare-cell.project-heading { color: var(--text); font-weight: 800; }
+    .compare-cell.value-strong { color: var(--lime); font-weight: 800; }
+    .compare-cell:last-child { border-right: 0; }
+    .compare-cell.project-heading small { display: block; margin-top: 3px; color: var(--muted); font: 10px var(--mono); font-weight: 400; }
+    .compare-empty { padding: 34px 20px; color: var(--muted); text-align: center; }
+    .compare-empty strong { display: block; color: var(--text); margin-bottom: 7px; }
+    .compare-toggle { border-color: rgba(115,217,233,0.25) !important; color: var(--cyan) !important; }
+    .compare-toggle.active { color: var(--lime) !important; border-color: rgba(200,242,105,0.35) !important; background: var(--lime-soft) !important; }
+    .notes-workspace { margin-bottom: 16px; padding: 20px; border: 1px solid rgba(200,242,105,0.2); border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(31, 55, 51, 0.76), rgba(16, 34, 52, 0.55)); }
+    .notes-workspace[hidden] { display: none; }
+    .notes-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+    .notes-head h3 { margin-top: 5px; font-size: 18px; letter-spacing: -0.04em; }
+    .notes-head p { max-width: 620px; margin-top: 7px; color: var(--muted-strong); font-size: 12px; line-height: 1.6; }
+    .notes-summary { display: flex; gap: 9px; }
+    .note-summary-item { min-width: 82px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 10px; background: rgba(5,14,24,0.32); }
+    .note-summary-item strong { display: block; color: var(--lime); font-size: 19px; }
+    .note-summary-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; }
+    .note-editor { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 9px; margin-top: 17px; padding-top: 17px; border-top: 1px solid var(--line); }
+    .note-editor input, .note-editor select, .note-editor textarea { width: 100%; border: 1px solid var(--line-strong); border-radius: 9px; padding: 10px 11px; color: var(--text); background: var(--panel-soft); font: 12px/1.5 var(--sans); outline: none; }
+    .note-editor textarea { min-height: 68px; resize: vertical; grid-column: 1 / span 2; }
+    .note-editor input:focus, .note-editor select:focus, .note-editor textarea:focus { border-color: var(--cyan); }
+    .note-editor-actions { display: flex; align-items: center; gap: 8px; grid-column: 1 / span 2; }
+    .note-save { min-height: 36px; border: 0; border-radius: 8px; padding: 0 13px; color: #09131e; background: var(--lime); font-size: 11px; font-weight: 800; cursor: pointer; }
+    .note-cancel { min-height: 36px; border: 1px solid var(--line); border-radius: 8px; padding: 0 12px; color: var(--muted-strong); background: transparent; font-size: 11px; cursor: pointer; }
+    .note-filter { margin-top: 16px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--muted-strong); background: rgba(14,29,45,0.78); font-size: 11px; outline: none; }
+    .notes-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    .note-card { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-soft); }
+    .note-card-head { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
+    .note-card-project { color: var(--cyan); font: 10px var(--mono); }
+    .note-card h4 { margin-top: 5px; color: var(--text); font-size: 14px; }
+    .note-card textarea { width: 100%; min-height: 90px; margin-top: 11px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 9px; color: var(--muted-strong); background: rgba(5,14,24,0.22); font: 12px/1.6 var(--sans); outline: none; }
+    .note-card textarea:focus { border-color: var(--cyan); }
+    .note-card-actions { display: flex; justify-content: flex-end; gap: 7px; margin-top: 8px; }
+    .note-card-actions button { border: 1px solid var(--line); border-radius: 7px; padding: 6px 8px; color: var(--muted-strong); background: transparent; font-size: 10px; cursor: pointer; }
+    .note-card-actions button:hover { color: var(--lime); border-color: rgba(200,242,105,0.36); }
+    .notes-empty { grid-column: 1 / -1; padding: 30px 20px; border: 1px dashed var(--line-strong); border-radius: 11px; color: var(--muted); text-align: center; font-size: 12px; }
+    .notes-empty strong { display: block; margin-bottom: 6px; color: var(--text); }
     .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
     .filters { display: flex; flex-wrap: wrap; gap: 7px; }
     .filter-btn { border: 1px solid var(--line); color: var(--muted); background: transparent; padding: 8px 11px; border-radius: 8px; font-size: 11px; }
@@ -392,18 +465,15 @@
             <circle class="radar-core" cx="20" cy="20" r="2.2" />
           </svg>
         </div>
-        <div class="brand-copy"><strong>开源项目雷达</strong><span>RADAR / v0.1 演示版</span></div>
+        <div class="brand-copy"><strong>开源项目雷达</strong><span>RADAR / PROJECT DISCOVERY</span></div>
       </div>
       <div class="nav-label">工作区</div>
       <nav class="nav" aria-label="Main navigation">
         <button class="nav-btn active" data-nav="discover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>发现项目</span></button>
         <button class="nav-btn" data-nav="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4.5A2.5 2.5 0 0 1 8.5 2h9A2.5 2.5 0 0 1 20 4.5V21l-7-4-7 4V4.5Z"/></svg><span>我的收藏</span></button>
-        <button class="nav-btn" data-nav="compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9v-8"/></svg><span>项目对比</span></button>
-        <button class="nav-btn" data-nav="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>研究笔记</span></button>
       </nav>
       <div class="nav-label" style="margin-top: 28px;">系统</div>
       <nav class="nav">
-        <button class="nav-btn" id="demoModeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><span>演示模式 <b style="font-size:9px;color:var(--lime);font-weight:600">开启</b></span></button>
         <button class="nav-btn" id="resetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12a8 8 0 1 0 2.34-5.66"/><path d="M4 4v6h6"/></svg><span>清除本地数据</span></button>
       </nav>
       <div class="sidebar-spacer"></div>
@@ -428,18 +498,22 @@
           <div class="hero-chips"><button class="quick-chip" data-query="AI agent dashboard">AI Agent 工具</button><button class="quick-chip" data-query="local-first app">本地优先应用</button><button class="quick-chip" data-query="developer productivity">开发者效率</button><button class="quick-chip" data-query="data visualization">数据可视化</button></div>
         </div>
         <div class="agent-card">
-          <div class="agent-head"><div class="agent-title"><div class="agent-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div><strong id="agentName">雷达 Agent</strong><span id="agentMode">受约束的评估模式</span></div></div><span class="status-dot" id="agentStatus">演示就绪</span></div>
+          <div class="agent-head"><div class="agent-title"><div class="agent-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div><strong id="agentName">雷达 Agent</strong><span id="agentMode">受约束的评估模式</span></div></div><span class="status-dot" id="agentStatus">可开始分析</span></div>
           <p class="agent-message" id="agentMessage">I will compare activity, documentation, build effort, and portfolio value before making a recommendation.</p>
           <div class="agent-steps"><div class="agent-step done"><i>✓</i><span id="stepOne">理解搜索意图</span></div><div class="agent-step done"><i>✓</i><span id="stepTwo">整理项目信号</span></div><div class="agent-step active" id="agentActiveStep"><i>3</i><span id="stepThree">评估构建潜力</span></div><div class="agent-step"><i>4</i><span id="stepFour">生成下一步建议</span></div></div>
         </div>
       </section>
 
-      <section class="stats" aria-label="工作区统计"><div class="stat"><small id="statScanned">已扫描项目</small><div class="stat-row"><strong id="scannedCount">24</strong><em id="statGrowth">+12%</em></div></div><div class="stat"><small id="statSaved">已收藏项目</small><div class="stat-row"><strong id="savedCount">06</strong><em id="statLocal">本地</em></div></div><div class="stat"><small id="statBuildable">当前可构建</small><div class="stat-row"><strong>08</strong><em id="statSignal">高信号</em></div></div><div class="stat"><small id="statDemo">演示模式</small><div class="stat-row"><strong id="statOn">开启</strong><em id="statConfig">零配置</em></div></div></section>
+      <section class="stats" aria-label="工作区统计"><div class="stat"><small id="statScanned">已找到项目</small><div class="stat-row"><strong id="scannedCount">00</strong><em id="statGrowth">当前结果</em></div></div><div class="stat"><small id="statSaved">已保存项目</small><div class="stat-row"><strong id="savedCount">00</strong><em id="statLocal">保存在浏览器</em></div></div><div class="stat"><small id="statBuildable">值得优先看</small><div class="stat-row"><strong id="highSignalCount">00</strong><em id="statSignal">参考分 80+</em></div></div><div class="stat"><small id="statService">使用方式</small><div class="stat-row"><strong id="statMode">访客模式</strong><em id="statConfig">无需登录</em></div></div></section>
 
-      <section class="section-head"><div><h2 id="sectionTitle">值得研究的项目</h2><p id="sectionSubtitle">精选演示结果 · 数据保存在本地 · 无需 API Key</p></div><div style="display:flex;align-items:center;gap:8px"><button class="refresh-results" id="refreshResults" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5"/></svg><span id="refreshLabel">换一批</span></button><div class="view-toggle"><button class="active" data-view="grid" aria-label="网格视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button data-view="list" aria-label="列表视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div></div></section>
-      <section class="toolbar"><div class="filters"><button class="filter-btn active" data-filter="all">全部项目</button><button class="filter-btn" data-filter="AI">AI / Agent</button><button class="filter-btn" data-filter="Productivity">效率工具</button><button class="filter-btn" data-filter="Dashboard">数据看板</button><button class="filter-btn" data-filter="Local-first">本地优先</button></div><select class="sort-select" id="sortSelect" aria-label="项目排序"><option value="signal">按信号评分</option><option value="stars">按 GitHub Star</option><option value="recent">按最近活跃</option></select></section>
+      <section class="section-head"><div><h2 id="sectionTitle">值得研究的项目</h2><p id="sectionSubtitle">公开仓库结果 · 数据保存在本地 · 无需登录即可浏览</p></div><div style="display:flex;align-items:center;gap:8px"><button class="refresh-results" id="refreshResults" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5"/></svg><span id="refreshLabel">换一批</span></button><div class="view-toggle"><button class="active" data-view="grid" aria-label="网格视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button data-view="list" aria-label="列表视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div></div></section>
+      <section class="saved-workspace" id="savedWorkspace" hidden><div><div class="eyebrow" id="savedEyebrow">研究工作区</div><h3 id="savedWorkspaceTitle">把收藏项目变成研究清单</h3><p id="savedWorkspaceCopy">给每个项目标记当前进度，写下下一步想法。现在保存在本地浏览器，登录功能后续加入。</p></div><div class="saved-summary"><div class="saved-summary-item"><strong id="savedTotalCount">00</strong><span id="savedTotalLabel">全部保存</span></div><div class="saved-summary-item"><strong id="savedTryCount">00</strong><span id="savedTryLabel">值得尝试</span></div></div></section>
+      <section class="compare-workspace" id="compareWorkspace" hidden><div class="compare-head"><div><div class="eyebrow" id="compareEyebrow">项目对比</div><h3 id="compareWorkspaceTitle">把候选项目放在一起看</h3><p id="compareWorkspaceCopy">从项目卡片加入 2–4 个项目，再用同一组指标快速判断差异。</p></div><div class="compare-actions"><button class="compare-action" id="clearCompare" type="button">清空对比</button><button class="compare-action" id="exportCompare" type="button">导出对比表</button></div></div><div class="compare-selection" id="compareSelection"></div><div id="compareTableMount"></div></section>
+      <section class="notes-workspace" id="notesWorkspace" hidden><div class="notes-head"><div><div class="eyebrow" id="notesEyebrow">研究笔记</div><h3 id="notesWorkspaceTitle">把想法留在项目旁边</h3><p id="notesWorkspaceCopy">记录你对项目的判断、问题和下一步计划。笔记目前保存在本地浏览器。</p></div><div class="notes-summary"><div class="note-summary-item"><strong id="notesTotalCount">00</strong><span id="notesTotalLabel">全部笔记</span></div><div class="note-summary-item"><strong id="notesProjectCount">00</strong><span id="notesProjectLabel">关联项目</span></div></div></div><div class="note-editor"><input id="noteTitleInput" type="text" placeholder="笔记标题，例如：适合改造成什么？"><select id="noteProjectInput"><option value="">选择关联项目（可选）</option></select><textarea id="noteContentInput" placeholder="写下你的观察、疑问或下一步计划…"></textarea><div class="note-editor-actions"><button class="note-save" id="noteSave" type="button">保存笔记</button><button class="note-cancel" id="noteCancel" type="button" hidden>取消编辑</button><select class="note-filter" id="noteFilter"><option value="all">查看全部笔记</option></select></div></div><div class="notes-list" id="notesList"></div></section>
+      <section class="saved-toolbar" id="savedToolbar" hidden><div class="saved-status-filters"><button class="saved-status-btn active" data-saved-status="all">全部</button><button class="saved-status-btn" data-saved-status="unresearched">未研究</button><button class="saved-status-btn" data-saved-status="trying">值得尝试</button><button class="saved-status-btn" data-saved-status="skipped">暂不采用</button><button class="saved-status-btn" data-saved-status="done">已完成</button></div><button class="saved-export" id="savedExport" type="button">导出研究清单</button></section>
+      <section class="toolbar" id="discoverToolbar"><div class="filters"><button class="filter-btn active" data-filter="all">全部项目</button><button class="filter-btn" data-filter="AI">AI / Agent</button><button class="filter-btn" data-filter="Productivity">效率工具</button><button class="filter-btn" data-filter="Dashboard">数据看板</button><button class="filter-btn" data-filter="Local-first">本地优先</button></div><select class="sort-select" id="sortSelect" aria-label="项目排序"><option value="signal">按信号评分</option><option value="stars">按 GitHub Star</option><option value="recent">按最近活跃</option></select></section>
       <section class="project-grid" id="projectGrid"></section>
-      <p class="footer-note" id="footerNote">当前为本地演示数据。后续连接 GitHub 和 Agent API 后即可启用实时模式。</p>
+      <p class="footer-note" id="footerNote">搜索结果来自公开 GitHub 仓库；收藏数据保存在当前浏览器。</p>
     </main>
   </div>
 
@@ -447,10 +521,10 @@
   <aside class="drawer" id="analysisDrawer" aria-label="项目分析面板">
     <div class="drawer-head"><div><div class="eyebrow" style="margin-bottom:10px" id="drawerEyebrow">Agent 分析</div><h2 id="drawerTitle">项目分析</h2><p id="drawerOwner">项目综合信号报告</p></div><button class="icon-btn" id="closeDrawer" aria-label="关闭分析"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
     <div class="run-status is-running" id="runStatus"><div class="run-status-head"><div class="run-status-title"><i class="run-status-dot"></i><span id="runStatusTitle">正在准备分析</span></div><strong class="run-status-percent" id="runStatusPercent">0%</strong></div><div class="run-status-bar"><span id="runStatusBar"></span></div><p class="run-status-detail" id="runStatusDetail">正在连接 GitHub，准备读取项目资料。</p><button class="run-status-retry" id="runStatusRetry" type="button">重新分析</button></div>
-    <div class="drawer-section"><h3 id="recommendationTitle">推荐动作</h3><div class="recommendation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><div><strong id="drawerRecommendation">Build a focused prototype</strong><p id="drawerReason">A clear feature boundary and strong visual surface make this a good next project.</p></div></div><div class="plain-grid"><div class="plain-item"><strong id="summaryLabel">一句话说明</strong><p class="plain-summary" id="drawerSummary">这个项目是做什么的，会在这里用简单的话说明。</p></div><div class="plain-item"><strong id="fitLabel">适合谁</strong><p id="drawerFit">当前资料不足以确认，建议先查看项目文档和 Demo。</p></div><div class="plain-item"><strong id="prosLabel">主要优点</strong><p id="drawerPros">等待 Agent 根据项目资料总结。</p></div><div class="plain-item"><strong id="watchLabel">需要注意</strong><p id="drawerWatch">等待 Agent 根据项目资料总结。</p></div></div></div>
+    <div class="drawer-section"><h3 id="recommendationTitle">推荐动作</h3><div class="recommendation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><div><strong id="drawerRecommendation">Build a focused prototype</strong><p id="drawerReason">A clear feature boundary and strong visual surface make this a good next project.</p></div></div><div class="plain-grid"><div class="plain-item"><strong id="summaryLabel">一句话说明</strong><p class="plain-summary" id="drawerSummary">这个项目是做什么的，会在这里用简单的话说明。</p></div><div class="plain-item"><strong id="fitLabel">适合谁</strong><p id="drawerFit">当前资料不足以确认，建议先查看项目文档和在线示例。</p></div><div class="plain-item"><strong id="prosLabel">主要优点</strong><p id="drawerPros">等待 Agent 根据项目资料总结。</p></div><div class="plain-item"><strong id="watchLabel">需要注意</strong><p id="drawerWatch">等待 Agent 根据项目资料总结。</p></div></div></div>
     <div class="drawer-section"><h3 id="scoreTitle">这个项目怎么样</h3><div class="score-list" id="scoreList"></div><p class="score-help" id="scoreHelp">分数越高，表示越值得优先了解；它不是项目质量的绝对结论。</p><div class="repo-facts" id="repoFacts"></div><div class="agent-evidence" id="agentEvidence"></div></div>
     <div class="drawer-section readme-preview"><button class="readme-toggle" id="readmeToggle" type="button">查看 README 原文</button><p class="readme-status" id="readmeStatus" hidden>README 原文仅用于核对来源，不作为主要分析内容。</p><pre class="readme-code" id="readmeCode" hidden></pre></div>
-    <div class="drawer-section"><h3 id="nextTitle">下一步建议</h3><p id="drawerNextAction">先打开在线 Demo，梳理主要用户流程，再选择一个足够小的功能开始迭代。</p></div>
+    <div class="drawer-section"><h3 id="nextTitle">下一步建议</h3><p id="drawerNextAction">先打开在线示例，梳理主要用户流程，再选择一个足够小的功能开始迭代。</p></div>
     <div class="drawer-section chat-section"><h3 id="chatTitle">继续问 Agent</h3><div class="chat-status" id="chatStatus"><i class="chat-status-dot"></i><span id="chatStatusText">等待你的问题</span><button class="chat-retry" id="chatRetry" type="button">重新发送</button></div><div class="chat-messages" id="chatMessages"></div><form class="chat-form" id="chatForm"><textarea class="chat-input" id="chatInput" rows="2" placeholder="例如：这个项目适合我现在做吗？"></textarea><button class="chat-send" id="chatSend" type="submit">发送</button></form><p class="chat-note" id="chatNote">只围绕当前仓库、README 和分析结果回答，不执行本地操作。</p></div>
     <div class="drawer-actions"><a class="ghost-btn" id="drawerRepo" href="#" target="_blank" rel="noreferrer">查看仓库</a><button class="primary-btn" id="drawerSave">保存到雷达</button></div>
   </aside>
@@ -468,8 +542,9 @@
 
     let activeProjects = projects;
     const state = {
-      query: '', filter: 'all', sort: 'signal', view: 'grid', savedOnly: false, liveMode: false,
-      saved: JSON.parse(localStorage.getItem('os-radar-saved') || '[]'), activeProject: null,
+      query: '', filter: 'all', sort: 'signal', view: 'grid', savedOnly: false, liveMode: false, savedStatus: 'all',
+      saved: JSON.parse(localStorage.getItem('os-radar-saved') || '[]'),
+      savedMeta: JSON.parse(localStorage.getItem('os-radar-saved-meta') || '{}'), compare: JSON.parse(localStorage.getItem('os-radar-compare') || '[]'), notes: JSON.parse(localStorage.getItem('os-radar-notes') || '[]'), noteFilter: 'all', editingNoteId: null, compareView: false, notesView: false, activeProject: null,
       language: localStorage.getItem('os-radar-language') || 'zh',
       theme: localStorage.getItem('os-radar-theme') || 'dark'
     };
@@ -477,23 +552,23 @@
     const copy = {
       zh: {
         searchButton: '搜索雷达', themeLight: '浅色', themeDark: '深色', export: '导出本地数据', account: '稍后登录',
-        workspace: '工作区', discover: '发现项目', saved: '我的收藏', compare: '项目对比', notes: '研究笔记', demo: '演示模式', reset: '清除本地数据',
+         workspace: '工作区', discover: '发现项目', saved: '我的收藏', compare: '', notes: '', reset: '清除本地数据',
         guest: '游客工作区', guestNote: '数据保存在当前浏览器', eyebrow: 'AI 辅助项目发现', heroTitleFirst: '找到下一个', heroTitleSecond: '值得构建的项目。', heroCopy: '搜索开源项目，理解 Star 数背后的真实信号，把一个好项目变成下一个可落地的作品。', quickChips: ['AI Agent 工具', '本地优先应用', '开发者效率', '数据可视化'], searchPlaceholder: '例如：AI Agent、数据看板、效率工具……',
-        agentMode: '简单易懂的项目评估', agentReady: '演示就绪', agentName: '雷达 Agent', agentMessage: '我会用简单的话说明这个项目是什么、值不值得用，以及你可以先做什么。',
-        steps: ['理解你的搜索', '查看项目资料', '判断是否适合你', '给出具体建议'], scanned: '本次找到项目', savedCount: '已保存项目', buildable: '适合先试', local: '保存在浏览器', highSignal: '仅作参考', demoLabel: '当前模式', on: '本地演示', zeroConfig: '无需登录',
-        section: '值得研究的项目', subtitle: '精选演示结果 · 数据保存在本地 · 无需 API Key', all: '全部项目', productivity: '效率工具', dashboard: '数据看板', localFirst: '本地优先', sortSignal: '按综合参考排序', sortStars: '按 GitHub Star', sortRecent: '按最近更新',
-        footer: '当前为本地演示数据。点击搜索后可查询 GitHub 公开仓库；Agent API 将在后续版本接入。', refresh: '换一批', liveResults: '实时 GitHub 结果 · 公开仓库 · Agent 分析尚未接入', liveError: 'GitHub 暂时无法访问，已保留本地演示结果。', searching: '正在搜索 GitHub…', recommendation: '推荐动作', score: '这个项目怎么样', scoreHelp: '分数越高，表示越值得优先了解；它不是项目质量的绝对结论。', next: '下一步建议', chatTitle: '继续问 Agent', chatPlaceholder: '例如：这个项目适合我现在做吗？', chatSend: '发送', chatNote: '只围绕当前仓库、README 和分析结果回答，不执行本地操作。', repo: '查看仓库', save: '保存到雷达', savedLocal: '已保存到本地', remove: '已从本地移除', resetDone: '本地雷达已清除', accountSoon: '账户同步将在本地优先版本之后加入。', demoOn: '当前已是演示模式', noSignal: '没有匹配信号', tryAgain: '请换一个关键词或清除当前筛选。', emptySaved: '还没有收藏项目', emptySavedNote: '在“发现项目”中收藏后，项目会保存在当前浏览器。', staged: '该模块将在下一版本开放', stagedNote: '当前 Demo 先保留导航结构，为后续 Agent 工作流预留位置。', results: '搜索结果', ranked: '演示模式 · 按项目综合信号排序', savedTitle: '我的收藏', savedSubtitle: '仅保存在本地 · 无需登录即可使用', compareTitle: '项目对比即将开放', notesTitle: '研究笔记即将开放', shellNote: '前端骨架已准备好，下一步接入 Agent 工作流。',
-        scoreLabels: ['最近更新情况', '资料是否清楚', '上手难不难', '实际用途', '适合作品展示'], actions: { '二次改造': '适合二次改造', '直接使用': '可以直接使用', '借鉴 UI': '适合借鉴界面', '暂不研究': '暂时不用研究' }
+        agentMode: '简单易懂的项目评估', agentReady: '可开始分析', agentName: '雷达 Agent', agentMessage: '我会用简单的话说明这个项目是什么、值不值得用，以及你可以先做什么。',
+        steps: ['理解你的搜索', '查看项目资料', '判断是否适合你', '给出具体建议'], scanned: '已找到项目', savedCount: '已保存项目', buildable: '值得优先看', local: '保存在浏览器', highSignal: '参考分 80+',
+        section: '值得研究的项目', subtitle: '公开仓库结果 · 数据保存在本地 · 无需登录即可浏览', all: '全部项目', productivity: '效率工具', dashboard: '数据看板', localFirst: '本地优先', sortSignal: '按综合参考排序', sortStars: '按 GitHub Star', sortRecent: '按最近更新',
+        footer: '搜索结果来自公开 GitHub 仓库；收藏数据保存在当前浏览器。', refresh: '换一批', liveResults: '实时 GitHub 结果 · 公开仓库', liveError: 'GitHub 暂时无法访问，请稍后重试。', searching: '正在搜索 GitHub…', recommendation: '推荐动作', score: '这个项目怎么样', scoreHelp: '分数越高，表示越值得优先了解；它不是项目质量的绝对结论。', next: '下一步建议', chatTitle: '继续问 Agent', chatPlaceholder: '例如：这个项目适合我现在做吗？', chatSend: '发送', chatNote: '只围绕当前仓库、README 和分析结果回答，不执行本地操作。', repo: '查看仓库', save: '保存到雷达', savedLocal: '已保存到本地', remove: '已从本地移除', resetDone: '本地雷达已清除', accountSoon: '账户同步将在本地优先版本之后加入。', noSignal: '没有匹配信号', tryAgain: '请换一个关键词或清除当前筛选。', emptySaved: '还没有收藏项目', emptySavedNote: '在“发现项目”中收藏后，项目会保存在当前浏览器。', staged: '该模块暂时隐藏', stagedNote: '后续会根据实际使用情况决定是否重新开放。', results: '搜索结果', ranked: '按项目综合信号排序', savedTitle: '我的收藏', savedSubtitle: '仅保存在本地 · 无需登录即可使用', compareTitle: '项目对比暂时隐藏', notesTitle: '研究笔记暂时隐藏', shellNote: '当前版本聚焦项目发现和收藏管理。',
+         scoreLabels: ['最近更新情况', '资料是否清楚', '上手难不难', '实际用途', '适合作品展示'], notesWorkspace: '研究笔记', notesWorkspaceTitle: '把想法留在项目旁边', notesWorkspaceCopy: '记录你对项目的判断、问题和下一步计划。笔记目前保存在本地浏览器。', notesTotalLabel: '全部笔记', notesProjectLabel: '关联项目', noteTitlePlaceholder: '笔记标题，例如：适合改造成什么？', noteProjectPlaceholder: '选择关联项目（可选）', noteContentPlaceholder: '写下你的观察、疑问或下一步计划…', noteSave: '保存笔记', noteUpdate: '更新笔记', noteCancel: '取消编辑', noteFilterAll: '查看全部笔记', noteEdit: '编辑', noteDelete: '删除', notesEmpty: '还没有研究笔记', notesEmptyNote: '在这里记录你的判断；保存后会一直保存在当前浏览器。', noteDeleteConfirm: '确定删除这条笔记吗？', compareWorkspace: '项目对比', compareWorkspaceTitle: '把候选项目放在一起看', compareWorkspaceCopy: '从项目卡片加入 2–4 个项目，再用同一组指标快速判断差异。', compareAdd: '加入对比', compareAdded: '已加入对比', compareClear: '清空对比', compareExport: '导出对比表', compareEmpty: '还没有加入对比的项目', compareEmptyNote: '返回发现项目，在卡片上点击“加入对比”。', compareLimit: '最多同时对比 4 个项目', savedWorkspace: '研究工作区', savedWorkspaceTitle: '把收藏项目变成研究清单', savedWorkspaceCopy: '给每个项目标记当前进度，写下下一步想法。现在保存在本地浏览器，登录功能后续加入。', savedTotalLabel: '全部保存', savedTryLabel: '值得尝试', savedAll: '全部', savedUnresearched: '未研究', savedTry: '值得尝试', savedSkip: '暂不采用', savedExport: '导出研究清单', savedStatusLabel: '研究状态', savedNotePlaceholder: '写下你的备注，例如：先看 Demo，再决定是否改造。', statusUnresearched: '未研究', statusTrying: '值得尝试', statusSkipped: '暂不采用', statusDone: '已完成', actions: { '二次改造': '适合二次改造', '直接使用': '可以直接使用', '借鉴 UI': '适合借鉴界面', '暂不研究': '暂时不用研究' }
       },
       en: {
         searchButton: 'Search radar', themeLight: 'Light', themeDark: 'Dark', export: 'Export local data', account: 'Sign in later',
-        workspace: 'Workspace', discover: 'Discover', saved: 'Saved projects', compare: 'Compare', notes: 'Research notes', demo: 'Demo mode', reset: 'Reset local data',
+         workspace: 'Workspace', discover: 'Discover', saved: 'Saved projects', compare: '', notes: '', reset: 'Reset local data',
         guest: 'Guest workspace', guestNote: 'Stored locally in browser', eyebrow: 'AI-assisted project discovery', heroTitleFirst: 'Find what to', heroTitleSecond: 'build next.', heroCopy: 'Search the open-source universe, understand the signal behind the stars, and turn a good repository into your next buildable idea.', quickChips: ['AI agent tools', 'Local-first apps', 'Developer productivity', 'Data visualization'], searchPlaceholder: 'Try: AI agent dashboard, CRM, productivity...',
-        agentMode: 'Plain-language project review', agentReady: 'Demo ready', agentName: 'Radar Agent', agentMessage: 'I will explain what this project does, whether it fits you, and what to try first.',
-        steps: ['Understand your search', 'Read project evidence', 'Check fit for you', 'Give a clear next step'], scanned: 'Found this time', savedCount: 'Saved projects', buildable: 'Good to try first', local: 'saved in browser', highSignal: 'reference only', demoLabel: 'Current mode', on: 'Local demo', zeroConfig: 'no login',
-        section: 'Projects worth exploring', subtitle: 'Curated demo results · local data only · no API key required', all: 'All projects', productivity: 'Productivity', dashboard: 'Dashboard', localFirst: 'Local-first', sortSignal: 'Sort: overall reference', sortStars: 'Sort: GitHub stars', sortRecent: 'Sort: recently updated',
-        footer: 'Demo data is intentionally local. Search now can query public GitHub repositories; the Agent API comes later.', refresh: 'More results', liveResults: 'Live GitHub results · public repositories · Agent analysis not connected yet', liveError: 'GitHub is temporarily unavailable, so the local demo results remain visible.', searching: 'Searching GitHub…', recommendation: 'Recommendation', score: 'How does this project look?', scoreHelp: 'A higher score means it is worth looking at sooner; it is not an absolute quality judgment.', next: 'What to do next', chatTitle: 'Ask the Agent', chatPlaceholder: 'For example: Is this a good project for me to build now?', chatSend: 'Send', chatNote: 'Answers stay focused on this repository, its README, and the analysis. No local actions are executed.', repo: 'View repository', save: 'Save to radar', savedLocal: 'Saved locally', remove: 'Removed from local radar', resetDone: 'Local radar reset', accountSoon: 'Account sync will be added after the local-first MVP.', demoOn: 'Demo mode is already active', noSignal: 'No signal found', tryAgain: 'Try another keyword or clear the current filter.', emptySaved: 'Your radar is empty', emptySavedNote: 'Save a project from Discover and it will stay in this browser.', staged: 'Module staged for the next iteration', stagedNote: 'This demo keeps the navigation visible so the product direction is clear.', results: 'Results for', ranked: 'Demo mode · ranked by project signal', savedTitle: 'Saved to your radar', savedSubtitle: 'Local-only collection · available without an account', compareTitle: 'Compare is coming next', notesTitle: 'Research notes are coming next', shellNote: 'The front-end shell is ready for the next Agent workflow.',
-        scoreLabels: ['Recent activity', 'Clarity of materials', 'Ease to start', 'Practical use', 'Portfolio fit'], actions: { '二次改造': 'Good for extending', '直接使用': 'Ready to use', '借鉴 UI': 'Use as a UI reference', '暂不研究': 'Skip for now' }
+        agentMode: 'Plain-language project review', agentReady: 'Ready to analyze', agentName: 'Radar Agent', agentMessage: 'I will explain what this project does, whether it fits you, and what to try first.',
+        steps: ['Understand your search', 'Read project evidence', 'Check fit for you', 'Give a clear next step'], scanned: 'Projects found', savedCount: 'Saved projects', buildable: 'Worth a closer look', local: 'saved in browser', highSignal: 'reference score 80+',
+        section: 'Projects worth exploring', subtitle: 'Public repository results · saved in this browser · no login required', all: 'All projects', productivity: 'Productivity', dashboard: 'Dashboard', localFirst: 'Local-first', sortSignal: 'Sort: overall reference', sortStars: 'Sort: GitHub stars', sortRecent: 'Sort: recently updated',
+        footer: 'Results come from public GitHub repositories; saved projects stay in this browser.', refresh: 'More results', liveResults: 'Live GitHub results · public repositories', liveError: 'GitHub is temporarily unavailable. Try again later.', searching: 'Searching GitHub…', recommendation: 'Recommendation', score: 'How does this project look?', scoreHelp: 'A higher score means it is worth looking at sooner; it is not an absolute quality judgment.', next: 'What to do next', chatTitle: 'Ask the Agent', chatPlaceholder: 'For example: Is this a good project for me to build now?', chatSend: 'Send', chatNote: 'Answers stay focused on this repository, its README, and the analysis. No local actions are executed.', repo: 'View repository', save: 'Save to radar', savedLocal: 'Saved locally', remove: 'Removed from local radar', resetDone: 'Local radar reset', accountSoon: 'Account sync will be added after the local-first MVP.', noSignal: 'No signal found', tryAgain: 'Try another keyword or clear the current filter.', emptySaved: 'Your radar is empty', emptySavedNote: 'Save a project from Discover and it will stay in this browser.', staged: 'Module temporarily hidden', stagedNote: 'Its return will depend on actual usage needs.', results: 'Results for', ranked: 'Ranked by project signal', savedTitle: 'Saved to your radar', savedSubtitle: 'Local-only collection · available without an account', compareTitle: 'Compare temporarily hidden', notesTitle: 'Notes temporarily hidden', shellNote: 'This version focuses on project discovery and saved projects.',
+         scoreLabels: ['Recent activity', 'Clarity of materials', 'Ease to start', 'Practical use', 'Portfolio fit'], notesWorkspace: 'Research notes', notesWorkspaceTitle: 'Keep ideas beside the project', notesWorkspaceCopy: 'Record your judgment, questions, and next step. Notes currently stay in this browser.', notesTotalLabel: 'All notes', notesProjectLabel: 'Linked projects', noteTitlePlaceholder: 'Note title, for example: What could I adapt?', noteProjectPlaceholder: 'Link a project (optional)', noteContentPlaceholder: 'Write your observation, question, or next step…', noteSave: 'Save note', noteUpdate: 'Update note', noteCancel: 'Cancel edit', noteFilterAll: 'View all notes', noteEdit: 'Edit', noteDelete: 'Delete', notesEmpty: 'No research notes yet', notesEmptyNote: 'Record your judgment here; saved notes stay in this browser.', noteDeleteConfirm: 'Delete this note?', compareWorkspace: 'Compare projects', compareWorkspaceTitle: 'Look at candidates side by side', compareWorkspaceCopy: 'Add 2–4 projects from the cards and compare them with the same set of signals.', compareAdd: 'Compare', compareAdded: 'Added', compareClear: 'Clear comparison', compareExport: 'Export comparison', compareEmpty: 'No projects selected', compareEmptyNote: 'Return to Discover and click “Compare” on a project card.', compareLimit: 'Compare up to 4 projects at once', savedWorkspace: 'Research workspace', savedWorkspaceTitle: 'Turn saved projects into a research list', savedWorkspaceCopy: 'Track progress and write the next idea for each project. Data stays in this browser until account sync is added.', savedTotalLabel: 'Saved total', savedTryLabel: 'Worth trying', savedAll: 'All', savedUnresearched: 'Unresearched', savedTry: 'Worth trying', savedSkip: 'Skip for now', savedExport: 'Export research list', savedStatusLabel: 'Research status', savedNotePlaceholder: 'Write a note, for example: Check the demo before deciding.', statusUnresearched: 'Unresearched', statusTrying: 'Worth trying', statusSkipped: 'Skip for now', statusDone: 'Completed', actions: { '二次改造': 'Good for extending', '直接使用': 'Ready to use', '借鉴 UI': 'Use as a UI reference', '暂不研究': 'Skip for now' }
       }
     };
     const $ = (selector) => document.querySelector(selector);
@@ -568,7 +643,7 @@
         signal: Math.min(99, Math.max(50, Math.round((Math.log10((repo.stargazers_count || 1) + 1) * 18) + (repo.archived ? 0 : 18)))),
         action: '二次改造', repo: repo.html_url, scores: { activity: repo.archived ? 35 : 78, docs: repo.has_wiki ? 78 : 62, effort: 68, utility: 76, portfolio: 82 },
         reason: 'Live repository metadata is available. The Agent evaluation layer will add a deeper recommendation in a later version.',
-        next: 'Open the repository, inspect its README and demo, then decide whether to use or extend it.'
+        next: 'Open the repository, inspect its README and live example, then decide whether to use or extend it.'
       };
     }
 
@@ -607,7 +682,7 @@
     async function loadReadme(project) {
       const status = $('#readmeStatus'); const code = $('#readmeCode');
       setRunStatus('running', 28, state.language === 'zh' ? '正在读取项目资料' : 'Reading project materials', state.language === 'zh' ? '正在读取 GitHub README，准备交给 Agent 整理。' : 'Loading the GitHub README before sending it to the Agent.');
-      if (!project.repo.startsWith('https://github.com/')) { status.textContent = state.language === 'zh' ? '演示项目没有在线 README。' : 'Demo projects do not have an online README.'; code.hidden = true; return ''; }
+      if (!project.repo.startsWith('https://github.com/')) { status.textContent = state.language === 'zh' ? '当前项目没有在线 README。' : 'This project has no online README.'; code.hidden = true; return ''; }
       const parts = new URL(project.repo).pathname.split('/').filter(Boolean);
       if (parts.length < 2) return '';
       status.textContent = state.language === 'zh' ? '正在加载 GitHub README 原文…' : 'Loading the original GitHub README…'; code.hidden = true;
@@ -657,7 +732,7 @@
         chatState.analysis = result;
         if (result.recommendation) $('#drawerRecommendation').textContent = result.recommendation;
         if (result.summary) { $('#drawerReason').textContent = result.summary; $('#drawerSummary').textContent = result.summary; }
-        $('#drawerFit').textContent = result.fit_for || (state.language === 'zh' ? '当前资料不足以确认，建议先查看项目文档和 Demo。' : 'The supplied evidence is not enough to confirm this yet. Check the docs and demo first.');
+        $('#drawerFit').textContent = result.fit_for || (state.language === 'zh' ? '当前资料不足以确认，建议先查看项目文档和在线示例。' : 'The supplied evidence is not enough to confirm this yet. Check the docs and demo first.');
         $('#drawerPros').textContent = result.pros || (state.language === 'zh' ? '当前资料不足以确认。' : 'The supplied evidence is not enough to confirm this yet.');
         $('#drawerWatch').textContent = result.watch_out || (state.language === 'zh' ? '当前资料不足以确认，建议先做小范围验证。' : 'The supplied evidence is not enough to confirm this yet. Validate with a small test first.');
         if (Array.isArray(result.next_steps) && result.next_steps.length) $('#drawerNextAction').textContent = result.next_steps.join(' ');
@@ -682,7 +757,9 @@
         const matchQuery = !state.query || fuzzyMatch(state.query, haystack);
         const matchFilter = state.filter === 'all' || project.tags.includes(state.filter);
         const matchSaved = !state.savedOnly || state.saved.includes(project.id);
-        return matchQuery && matchFilter && matchSaved;
+        const meta = state.savedMeta[project.id] || {};
+        const matchSavedStatus = !state.savedOnly || state.savedStatus === 'all' || (meta.status || 'unresearched') === state.savedStatus;
+        return matchQuery && matchFilter && matchSaved && matchSavedStatus;
       });
       if (state.sort === 'stars') items.sort((a, b) => b.stars - a.stars);
       if (state.sort === 'recent') items.sort((a, b) => a.updated.localeCompare(b.updated));
@@ -692,8 +769,19 @@
 
     function render() {
       const items = filteredProjects();
-      grid.className = state.view === 'list' ? 'project-grid list-view' : 'project-grid';
       const t = copy[state.language];
+      const savedView = state.savedOnly;
+      $('#savedWorkspace').hidden = !savedView;
+      $('#savedToolbar').hidden = !savedView;
+      $('#discoverToolbar').hidden = savedView;
+      renderNotesWorkspace();
+      if (savedView) {
+        const savedProjects = activeProjects.filter((project) => state.saved.includes(project.id));
+        const tryingCount = savedProjects.filter((project) => (state.savedMeta[project.id]?.status || 'unresearched') === 'trying').length;
+        $('#savedTotalCount').textContent = String(savedProjects.length).padStart(2, '0');
+        $('#savedTryCount').textContent = String(tryingCount).padStart(2, '0');
+      }
+      grid.className = state.view === 'list' ? 'project-grid list-view' : 'project-grid';
       grid.innerHTML = items.length ? items.map((project, index) => {
         const isSaved = state.saved.includes(project.id);
         const localized = getProjectText(project);
@@ -705,20 +793,99 @@
           <div class="tag-row"><span class="tag accent">${project.language}</span>${project.tags.map((tag) => `<span class="tag ${tag === 'AI' ? 'lime' : ''}">${tag}</span>`).join('')}</div>
           <div class="project-meta"><div class="meta-item"><small>${state.language === 'zh' ? '信号' : 'Signal'}</small><strong style="color:var(--lime)">${project.signal}</strong></div><div class="meta-item"><small>Star</small><strong>★ ${formatNumber(project.stars)}</strong></div><div class="meta-item"><small>${state.language === 'zh' ? 'Fork' : 'Forks'}</small><strong>${formatNumber(project.forks || 0)}</strong></div></div>
           <div class="project-owner project-owner-facts">${state.language === 'zh' ? '更新' : 'Updated'} ${project.updated} · ${project.license || (state.language === 'zh' ? '许可证待确认' : 'License unconfirmed')}</div>
+          ${state.savedOnly ? `<div class="saved-card-tools"><label class="saved-status-label"><span>${t.savedStatusLabel}</span><select class="saved-status-select" data-saved-status-change="${project.id}"><option value="unresearched" ${((state.savedMeta[project.id]?.status || 'unresearched') === 'unresearched') ? 'selected' : ''}>${t.statusUnresearched}</option><option value="trying" ${state.savedMeta[project.id]?.status === 'trying' ? 'selected' : ''}>${t.statusTrying}</option><option value="skipped" ${state.savedMeta[project.id]?.status === 'skipped' ? 'selected' : ''}>${t.statusSkipped}</option><option value="done" ${state.savedMeta[project.id]?.status === 'done' ? 'selected' : ''}>${t.statusDone}</option></select></label><textarea class="saved-note-input" data-saved-note="${project.id}" placeholder="${t.savedNotePlaceholder}">${state.savedMeta[project.id]?.note || ''}</textarea></div>` : ''}
           <div class="card-actions"><a href="${project.repo}" target="_blank" rel="noreferrer">${t.repo} ${icon('external')}</a><button class="analyze-btn" data-analyze="${project.id}">${icon('spark')} ${state.language === 'zh' ? '分析项目' : 'Analyze'}</button></div>
         </article>`;
       }).join('') : `<div class="empty"><strong>${t.noSignal}</strong>${t.tryAgain}</div>`;
       $('#scannedCount').textContent = String(items.length).padStart(2, '0');
       $('#savedCount').textContent = String(state.saved.length).padStart(2, '0');
+      $('#highSignalCount').textContent = String(items.filter((project) => project.signal >= 80).length).padStart(2, '0');
       grid.querySelectorAll('[data-save]').forEach((button) => button.addEventListener('click', () => toggleSaved(button.dataset.save)));
       grid.querySelectorAll('[data-analyze]').forEach((button) => button.addEventListener('click', () => openAnalysis(button.dataset.analyze)));
+      grid.querySelectorAll('[data-saved-status-change]').forEach((select) => select.addEventListener('change', () => updateSavedMeta(select.dataset.savedStatusChange, { status: select.value })));
+      grid.querySelectorAll('[data-saved-note]').forEach((input) => input.addEventListener('change', () => updateSavedMeta(input.dataset.savedNote, { note: input.value })));
     }
 
     function formatNumber(value) { return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value; }
     function toggleSaved(id) {
-      state.saved = state.saved.includes(id) ? state.saved.filter((item) => item !== id) : [...state.saved, id];
-      localStorage.setItem('os-radar-saved', JSON.stringify(state.saved));
-      render(); showToast(state.saved.includes(id) ? copy[state.language].savedLocal : copy[state.language].remove);
+      const adding = !state.saved.includes(id);
+      state.saved = adding ? [...state.saved, id] : state.saved.filter((item) => item !== id);
+      if (adding && !state.savedMeta[id]) state.savedMeta[id] = { status: 'unresearched', note: '' };
+      if (!adding) delete state.savedMeta[id];
+      localStorage.setItem('os-radar-saved', JSON.stringify(state.saved)); localStorage.setItem('os-radar-saved-meta', JSON.stringify(state.savedMeta));
+      render(); showToast(adding ? copy[state.language].savedLocal : copy[state.language].remove);
+    }
+    function updateSavedMeta(id, patch) {
+      state.savedMeta[id] = { ...(state.savedMeta[id] || { status: 'unresearched', note: '' }), ...patch };
+      localStorage.setItem('os-radar-saved-meta', JSON.stringify(state.savedMeta));
+      if (patch.status) { const labels = { unresearched: state.language === 'zh' ? '未研究' : 'Unresearched', trying: state.language === 'zh' ? '值得尝试' : 'Worth trying', skipped: state.language === 'zh' ? '暂不采用' : 'Skip for now', done: state.language === 'zh' ? '已完成' : 'Completed' }; render(); showToast(state.language === 'zh' ? `已标记为${labels[patch.status]}` : `Marked as ${labels[patch.status]}`); }
+      else showToast(state.language === 'zh' ? '备注已保存' : 'Note saved');
+    }
+    function noteProjectName(id) {
+      const project = activeProjects.find((item) => item.id === id) || projects.find((item) => item.id === id);
+      return project ? project.name : (state.language === 'zh' ? '未关联项目' : 'No linked project');
+    }
+    function resetNoteEditor() {
+      state.editingNoteId = null; $('#noteTitleInput').value = ''; $('#noteProjectInput').value = ''; $('#noteContentInput').value = ''; $('#noteCancel').hidden = true; $('#noteSave').textContent = copy[state.language].noteSave;
+    }
+    function renderNoteInputs() {
+      const t = copy[state.language]; const projectSelect = $('#noteProjectInput'); const filterSelect = $('#noteFilter');
+      const projectOptions = [...new Map([...projects, ...activeProjects].map((project) => [project.id, project])).values()];
+      projectSelect.innerHTML = `<option value="">${t.noteProjectPlaceholder}</option>${projectOptions.map((project) => `<option value="${project.id}">${project.name}</option>`).join('')}`;
+      filterSelect.innerHTML = `<option value="all">${t.noteFilterAll}</option>${projectOptions.filter((project) => state.notes.some((note) => note.projectId === project.id)).map((project) => `<option value="${project.id}">${project.name}</option>`).join('')}`;
+      filterSelect.value = state.noteFilter;
+      $('#noteTitleInput').placeholder = t.noteTitlePlaceholder; $('#noteContentInput').placeholder = t.noteContentPlaceholder; $('#noteSave').textContent = state.editingNoteId ? t.noteUpdate : t.noteSave; $('#noteCancel').textContent = t.noteCancel;
+    }
+    function renderNotesWorkspace() {
+      if (!state.notesView) { $('#notesWorkspace').hidden = true; return; }
+      $('#notesWorkspace').hidden = false; renderNoteInputs();
+      const t = copy[state.language]; const filtered = state.notes.filter((note) => state.noteFilter === 'all' || note.projectId === state.noteFilter);
+      $('#notesTotalCount').textContent = String(state.notes.length).padStart(2, '0');
+      $('#notesProjectCount').textContent = String(new Set(state.notes.map((note) => note.projectId).filter(Boolean)).size).padStart(2, '0');
+      $('#notesList').innerHTML = filtered.length ? filtered.map((note) => `<article class="note-card"><div class="note-card-head"><div><div class="note-card-project">${noteProjectName(note.projectId)}</div><h4>${note.title || (state.language === 'zh' ? '未命名笔记' : 'Untitled note')}</h4></div><span class="project-owner">${new Date(note.updatedAt).toLocaleDateString(state.language === 'zh' ? 'zh-CN' : 'en-US')}</span></div><textarea data-note-content="${note.id}">${note.content}</textarea><div class="note-card-actions"><button type="button" data-note-edit="${note.id}">${t.noteEdit}</button><button type="button" data-note-delete="${note.id}">${t.noteDelete}</button></div></article>`).join('') : `<div class="notes-empty"><strong>${t.notesEmpty}</strong>${t.notesEmptyNote}</div>`;
+      $('#notesList').querySelectorAll('[data-note-content]').forEach((input) => input.addEventListener('change', () => updateNote(input.dataset.noteContent, { content: input.value })));
+      $('#notesList').querySelectorAll('[data-note-edit]').forEach((button) => button.addEventListener('click', () => editNote(button.dataset.noteEdit)));
+      $('#notesList').querySelectorAll('[data-note-delete]').forEach((button) => button.addEventListener('click', () => deleteNote(button.dataset.noteDelete)));
+    }
+    function saveNote() {
+      const title = $('#noteTitleInput').value.trim(); const content = $('#noteContentInput').value.trim(); const projectId = $('#noteProjectInput').value;
+      if (!title && !content) { showToast(state.language === 'zh' ? '先写一点笔记内容' : 'Write a note first'); return; }
+      if (state.editingNoteId) updateNote(state.editingNoteId, { title, content, projectId, updatedAt: new Date().toISOString() });
+      else state.notes.unshift({ id: `note-${Date.now()}`, title, content, projectId, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      localStorage.setItem('os-radar-notes', JSON.stringify(state.notes)); resetNoteEditor(); renderNotesWorkspace(); showToast(state.language === 'zh' ? '笔记已保存' : 'Note saved');
+    }
+    function updateNote(id, patch) {
+      const note = state.notes.find((item) => item.id === id); if (!note) return;
+      Object.assign(note, patch, { updatedAt: patch.updatedAt || new Date().toISOString() }); localStorage.setItem('os-radar-notes', JSON.stringify(state.notes));
+      if (state.notesView) renderNotesWorkspace();
+    }
+    function editNote(id) {
+      const note = state.notes.find((item) => item.id === id); if (!note) return;
+      state.editingNoteId = id; $('#noteTitleInput').value = note.title; $('#noteProjectInput').value = note.projectId || ''; $('#noteContentInput').value = note.content; $('#noteCancel').hidden = false; $('#noteSave').textContent = copy[state.language].noteUpdate; $('#noteTitleInput').focus();
+    }
+    function deleteNote(id) {
+      const t = copy[state.language]; if (!window.confirm(t.noteDeleteConfirm)) return;
+      state.notes = state.notes.filter((note) => note.id !== id); localStorage.setItem('os-radar-notes', JSON.stringify(state.notes)); if (state.editingNoteId === id) resetNoteEditor(); renderNotesWorkspace(); showToast(state.language === 'zh' ? '笔记已删除' : 'Note deleted');
+    }
+    function toggleCompare(id) {
+      const has = state.compare.includes(id);
+      if (has) state.compare = state.compare.filter((item) => item !== id);
+      else if (state.compare.length < 4) state.compare = [...state.compare, id];
+      else { showToast(state.language === 'zh' ? '最多同时对比 4 个项目' : 'Compare up to 4 projects at once'); return; }
+      localStorage.setItem('os-radar-compare', JSON.stringify(state.compare));
+      renderCompareWorkspace(); render();
+    }
+    function compareProjects() { return state.compare.map((id) => activeProjects.find((project) => project.id === id) || projects.find((project) => project.id === id)).filter(Boolean); }
+    function renderCompareWorkspace() {
+      const t = copy[state.language]; const mount = $('#compareTableMount'); const selection = $('#compareSelection');
+      $('#compareWorkspace').hidden = !state.compareView;
+      if (!state.compareView) return;
+      const selected = compareProjects();
+      selection.innerHTML = selected.length ? selected.map((project) => `<span class="compare-chip">${project.name}<button type="button" data-remove-compare="${project.id}" aria-label="${state.language === 'zh' ? '移除' : 'Remove'}">×</button></span>`).join('') : `<div class="compare-empty"><strong>${state.language === 'zh' ? '还没有加入对比的项目' : 'No projects selected'}</strong>${state.language === 'zh' ? '返回发现项目，在卡片上点击“加入对比”。' : 'Return to Discover and click “Compare” on a project card.'}</div>`;
+      const rows = [{ label: state.language === 'zh' ? 'Star' : 'Stars', key: 'stars', strong: true }, { label: state.language === 'zh' ? 'Fork' : 'Forks', key: 'forks', strong: true }, { label: state.language === 'zh' ? '编程语言' : 'Language', key: 'language' }, { label: state.language === 'zh' ? '最近更新' : 'Updated', key: 'updated' }, { label: 'License', key: 'license' }, { label: state.language === 'zh' ? '最近更新情况' : 'Activity', score: 'activity' }, { label: state.language === 'zh' ? '资料是否清楚' : 'Documentation', score: 'docs' }, { label: state.language === 'zh' ? '上手难不难' : 'Ease to start', score: 'effort' }, { label: state.language === 'zh' ? '实际用途' : 'Practical use', score: 'utility' }, { label: state.language === 'zh' ? '适合作品展示' : 'Portfolio fit', score: 'portfolio' }];
+      if (!selected.length) { mount.innerHTML = ''; return; }
+      mount.innerHTML = `<div class="compare-table-wrap"><div class="compare-table" style="--compare-count:${selected.length}"><div class="compare-cell label">${state.language === 'zh' ? '对比项目' : 'Projects'}</div>${selected.map((project) => `<div class="compare-cell project-heading">${project.name}<small>${project.owner}</small></div>`).join('')}${rows.map((row) => `<div class="compare-cell label">${row.label}</div>${selected.map((project) => { const value = row.score ? project.scores[row.score] : row.key === 'stars' || row.key === 'forks' ? formatNumber(project[row.key] || 0) : project[row.key] || (state.language === 'zh' ? '待确认' : 'Unconfirmed'); return `<div class="compare-cell ${row.strong || row.score ? 'value-strong' : ''}">${value}${row.score ? '/100' : ''}</div>`; }).join('')}`).join('')}</div></div>`;
+      selection.querySelectorAll('[data-remove-compare]').forEach((button) => button.addEventListener('click', () => toggleCompare(button.dataset.removeCompare)));
     }
     function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2200); }
 
@@ -746,7 +913,7 @@
       $('#readmeToggle').textContent = state.language === 'zh' ? '查看 README 原文' : 'View original README'; $('#readmeCode').hidden = true; $('#readmeStatus').hidden = true;
       $('#analysisDrawer').classList.add('open'); $('#drawerBackdrop').classList.add('open');
       if (state.liveMode) loadReadme(project).then((readme) => { runState.readme = readme; return loadAgentAnalysis(project, readme); }).finally(() => { runState.running = false; });
-      else { setRunStatus('done', 100, state.language === 'zh' ? '演示分析完成' : 'Demo analysis complete', state.language === 'zh' ? '这是本地演示项目，当前使用内置资料和规则评分。' : 'This is a local demo project using built-in materials and rule-based scores.'); runState.running = false; }
+      else { setRunStatus('done', 100, state.language === 'zh' ? '分析完成' : 'Analysis complete', state.language === 'zh' ? '当前使用项目公开资料和规则评分。' : 'Using public project materials and rule-based scores.'); runState.running = false; }
     }
     async function retryAnalysis() {
       if (!runState.project || runState.running) return;
@@ -826,9 +993,10 @@
       document.querySelectorAll('.quick-chip').forEach((chip, index) => { chip.textContent = t.quickChips[index]; });
       $('#agentName').textContent = t.agentName; $('#agentMode').textContent = t.agentMode; $('#agentStatus').textContent = t.agentReady; $('#agentMessage').textContent = t.agentMessage; $('#drawerEyebrow').textContent = state.language === 'zh' ? 'Agent 分析' : 'Agent analysis'; $('#drawerTitle').textContent = state.language === 'zh' ? '项目分析' : 'Project analysis'; $('#drawerOwner').textContent = state.language === 'zh' ? '项目综合信号报告' : 'Repository signal report'; $('#drawerRecommendation').textContent = state.language === 'zh' ? '构建一个聚焦的原型' : 'Build a focused prototype'; $('#drawerReason').textContent = state.language === 'zh' ? '清晰的功能边界和良好的视觉呈现，让它适合作为下一个项目。' : 'A clear feature boundary and strong visual surface make this a good next project.';
       $('#stepOne').textContent = t.steps[0]; $('#stepTwo').textContent = t.steps[1]; $('#stepThree').textContent = t.steps[2]; $('#stepFour').textContent = t.steps[3];
-      $('#statScanned').textContent = t.scanned; $('#statSaved').textContent = t.savedCount; $('#statBuildable').textContent = t.buildable; $('#statLocal').textContent = t.local; $('#statSignal').textContent = t.highSignal; $('#statDemo').textContent = t.demoLabel; $('#statOn').textContent = t.on; $('#statConfig').textContent = t.zeroConfig;
+       $('#statScanned').textContent = t.scanned; $('#statSaved').textContent = t.savedCount; $('#statBuildable').textContent = t.buildable; $('#statLocal').textContent = t.local; $('#statSignal').textContent = t.highSignal; $('#statService').textContent = state.language === 'zh' ? '使用方式' : 'Access'; $('#statMode').textContent = state.language === 'zh' ? '访客模式' : 'Guest'; $('#statConfig').textContent = state.language === 'zh' ? '无需登录' : 'No login';
       $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; $('#footerNote').textContent = t.footer; $('#refreshLabel').textContent = t.refresh;
       $('#recommendationTitle').textContent = t.recommendation; $('#scoreTitle').textContent = t.score; $('#scoreHelp').textContent = t.scoreHelp; $('#nextTitle').textContent = t.next; $('#chatTitle').textContent = t.chatTitle; $('#chatInput').placeholder = t.chatPlaceholder; $('#chatSend').textContent = t.chatSend; $('#chatNote').textContent = t.chatNote; $('#drawerRepo').textContent = t.repo; $('#drawerSave').textContent = t.save;
+      $('#savedWorkspaceTitle').textContent = t.savedWorkspaceTitle; $('#savedWorkspaceCopy').textContent = t.savedWorkspaceCopy; $('#savedEyebrow').textContent = t.savedWorkspace; $('#savedTotalLabel').textContent = t.savedTotalLabel; $('#savedTryLabel').textContent = t.savedTryLabel; $('#savedExport').textContent = t.savedExport; $('#notesWorkspaceTitle').textContent = t.notesWorkspaceTitle; $('#notesWorkspaceCopy').textContent = t.notesWorkspaceCopy; $('#notesEyebrow').textContent = t.notesWorkspace; $('#notesTotalLabel').textContent = t.notesTotalLabel; $('#notesProjectLabel').textContent = t.notesProjectLabel; $('#noteSave').textContent = state.editingNoteId ? t.noteUpdate : t.noteSave; $('#noteCancel').textContent = t.noteCancel; $('#compareWorkspaceTitle').textContent = t.compareWorkspaceTitle; $('#compareWorkspaceCopy').textContent = t.compareWorkspaceCopy; $('#compareEyebrow').textContent = t.compareWorkspace; $('#clearCompare').textContent = t.compareClear; $('#exportCompare').textContent = t.compareExport; document.querySelectorAll('[data-saved-status]').forEach((button) => { const labels = { all: t.savedAll, unresearched: t.savedUnresearched, trying: t.savedTry, skipped: t.savedSkip, done: t.statusDone }; button.textContent = labels[button.dataset.savedStatus] || button.textContent; });
       document.querySelector('[data-filter="all"]').textContent = t.all; document.querySelector('[data-filter="Productivity"]').textContent = t.productivity; document.querySelector('[data-filter="Dashboard"]').textContent = t.dashboard; document.querySelector('[data-filter="Local-first"]').textContent = t.localFirst;
       const options = $('#sortSelect').options; options[0].textContent = t.sortSignal; options[1].textContent = t.sortStars; options[2].textContent = t.sortRecent;
       localStorage.setItem('os-radar-language', state.language); render();
@@ -846,7 +1014,6 @@
       document.querySelectorAll('[data-nav]').forEach((button) => { const label = button.querySelector('span'); if (label) label.textContent = labels[button.dataset.nav]; });
       document.querySelector('.nav-label').textContent = t.workspace;
       document.querySelectorAll('.nav-label')[1].textContent = state.language === 'zh' ? '系统' : 'System';
-      $('#demoModeBtn').querySelector('span').innerHTML = `${t.demo} <b style="font-size:9px;color:var(--lime);font-weight:600">${t.on}</b>`;
       $('#resetBtn').querySelector('span').textContent = t.reset;
     }
 
@@ -865,13 +1032,19 @@
     document.querySelectorAll('[data-nav]').forEach((button) => button.addEventListener('click', () => {
       document.querySelectorAll('[data-nav]').forEach((item) => item.classList.remove('active')); button.classList.add('active');
       const t = copy[state.language];
-      if (button.dataset.nav === 'saved') { state.savedOnly = true; state.filter = 'all'; state.query = ''; $('#sectionTitle').textContent = t.savedTitle; $('#sectionSubtitle').textContent = t.savedSubtitle; render(); } else if (button.dataset.nav === 'discover') { state.savedOnly = false; $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; render(); } else { state.savedOnly = false; $('#sectionTitle').textContent = button.dataset.nav === 'compare' ? t.compareTitle : t.notesTitle; $('#sectionSubtitle').textContent = t.shellNote; grid.innerHTML = `<div class="empty"><strong>${t.staged}</strong>${t.stagedNote}</div>`; }
+        if (button.dataset.nav === 'saved') { state.savedOnly = true; state.compareView = false; state.notesView = false; state.savedStatus = 'all'; state.filter = 'all'; state.query = ''; $('#sectionTitle').textContent = t.savedTitle; $('#sectionSubtitle').textContent = t.savedSubtitle; $('#savedWorkspaceTitle').textContent = t.savedWorkspaceTitle; $('#savedWorkspaceCopy').textContent = t.savedWorkspaceCopy; $('#savedEyebrow').textContent = t.savedWorkspace; $('#savedTotalLabel').textContent = t.savedTotalLabel; $('#savedTryLabel').textContent = t.savedTryLabel; $('#savedExport').textContent = t.savedExport; document.querySelectorAll('[data-saved-status]').forEach((item) => { item.classList.toggle('active', item.dataset.savedStatus === 'all'); }); renderCompareWorkspace(); render(); } else if (button.dataset.nav === 'compare') { state.savedOnly = false; state.compareView = true; state.notesView = false; $('#sectionTitle').textContent = t.compareWorkspace; $('#sectionSubtitle').textContent = t.compareWorkspaceCopy; $('#compareWorkspaceTitle').textContent = t.compareWorkspaceTitle; $('#compareWorkspaceCopy').textContent = t.compareWorkspaceCopy; $('#compareEyebrow').textContent = t.compareWorkspace; $('#clearCompare').textContent = t.compareClear; $('#exportCompare').textContent = t.compareExport; renderCompareWorkspace(); render(); } else if (button.dataset.nav === 'notes') { state.savedOnly = false; state.compareView = false; state.notesView = true; $('#sectionTitle').textContent = t.notesWorkspace; $('#sectionSubtitle').textContent = t.notesWorkspaceCopy; $('#notesWorkspaceTitle').textContent = t.notesWorkspaceTitle; $('#notesWorkspaceCopy').textContent = t.notesWorkspaceCopy; $('#notesEyebrow').textContent = t.notesWorkspace; renderCompareWorkspace(); render(); } else if (button.dataset.nav === 'discover') { state.savedOnly = false; state.compareView = false; state.notesView = false; $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; renderCompareWorkspace(); render(); }
     }));
     $('#closeDrawer').addEventListener('click', closeAnalysis); $('#drawerBackdrop').addEventListener('click', closeAnalysis); $('#chatForm').addEventListener('submit', sendChatMessage);
     $('#drawerSave').addEventListener('click', () => { if (state.activeProject) { toggleSaved(state.activeProject.id); $('#drawerSave').textContent = state.saved.includes(state.activeProject.id) ? copy[state.language].savedLocal : copy[state.language].save; } });
-    $('#exportBtn').addEventListener('click', () => { const payload = { saved: state.saved, exportedAt: new Date().toISOString(), mode: 'demo' }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'open-source-radar-data.json'; link.click(); URL.revokeObjectURL(url); showToast(state.language === 'zh' ? '本地数据已导出' : 'Local data exported'); });
-    $('#resetBtn').addEventListener('click', () => { localStorage.removeItem('os-radar-saved'); state.saved = []; render(); showToast(copy[state.language].resetDone); });
-    $('#demoModeBtn').addEventListener('click', () => showToast(copy[state.language].demoOn));
+    $('#exportBtn').addEventListener('click', () => { const payload = { saved: state.saved, exportedAt: new Date().toISOString(), mode: 'guest-local' }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'open-source-radar-data.json'; link.click(); URL.revokeObjectURL(url); showToast(state.language === 'zh' ? '本地数据已导出' : 'Local data exported'); });
+    $('#savedExport').addEventListener('click', () => { const payload = { saved: state.saved, metadata: state.savedMeta, exportedAt: new Date().toISOString(), mode: 'local-research-workspace' }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'open-source-radar-research.json'; link.click(); URL.revokeObjectURL(url); showToast(state.language === 'zh' ? '研究清单已导出' : 'Research list exported'); });
+    $('#clearCompare').addEventListener('click', () => { state.compare = []; localStorage.setItem('os-radar-compare', JSON.stringify(state.compare)); renderCompareWorkspace(); render(); showToast(state.language === 'zh' ? '对比项目已清空' : 'Comparison cleared'); });
+    $('#noteSave').addEventListener('click', saveNote);
+    $('#noteCancel').addEventListener('click', () => { resetNoteEditor(); renderNotesWorkspace(); });
+    $('#noteFilter').addEventListener('change', (event) => { state.noteFilter = event.target.value; renderNotesWorkspace(); });
+    $('#exportCompare').addEventListener('click', () => { const selected = compareProjects(); const payload = { projects: selected.map((project) => ({ name: project.name, owner: project.owner, language: project.language, stars: project.stars, forks: project.forks, updated: project.updated, license: project.license, scores: project.scores, url: project.repo })), exportedAt: new Date().toISOString() }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'open-source-radar-comparison.json'; link.click(); URL.revokeObjectURL(url); showToast(state.language === 'zh' ? '对比表已导出' : 'Comparison exported'); });
+    document.querySelectorAll('[data-saved-status]').forEach((button) => button.addEventListener('click', () => { state.savedStatus = button.dataset.savedStatus; document.querySelectorAll('[data-saved-status]').forEach((item) => item.classList.toggle('active', item === button)); render(); }));
+    $('#resetBtn').addEventListener('click', () => { localStorage.removeItem('os-radar-saved'); localStorage.removeItem('os-radar-saved-meta'); state.saved = []; state.savedMeta = {}; render(); showToast(copy[state.language].resetDone); });
     $('#accountBtn').addEventListener('click', () => showToast(copy[state.language].accountSoon));
     applyLanguage(); applyTheme(); updateNavigationLabel();
   </script>
