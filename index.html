@@ -1,0 +1,879 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Open Source Radar - discover, evaluate and save open-source projects." />
+  <title>Open Source Radar</title>
+  <style>
+    :root {
+      --bg: #07111d;
+      --bg-elevated: #0c1927;
+      --panel: rgba(15, 29, 45, 0.82);
+      --panel-strong: #122338;
+      --panel-soft: rgba(22, 42, 64, 0.72);
+      --line: rgba(164, 193, 219, 0.14);
+      --line-strong: rgba(164, 193, 219, 0.28);
+      --text: #eef5fb;
+      --muted: #8fa5b9;
+      --muted-strong: #c0d0dd;
+      --lime: #c8f269;
+      --lime-soft: rgba(200, 242, 105, 0.13);
+      --cyan: #73d9e9;
+      --cyan-soft: rgba(115, 217, 233, 0.12);
+      --orange: #ffb76b;
+      --orange-soft: rgba(255, 183, 107, 0.13);
+      --red: #ff879d;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", ui-sans-serif, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    body.light {
+      --bg: #f4f7fb;
+      --bg-elevated: #ffffff;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-strong: #ffffff;
+      --panel-soft: rgba(235, 242, 249, 0.96);
+      --line: rgba(37, 62, 86, 0.16);
+      --line-strong: rgba(37, 62, 86, 0.3);
+      --text: #14263a;
+      --muted: #536a80;
+      --muted-strong: #2f455c;
+      --lime: #4f7f1f;
+      --lime-soft: rgba(95, 143, 39, 0.14);
+      --cyan: #086b82;
+      --cyan-soft: rgba(8, 107, 130, 0.1);
+      --orange: #a85b10;
+      --orange-soft: rgba(168, 91, 16, 0.12);
+      --red: #ae3f58;
+      --shadow: 0 20px 60px rgba(45, 74, 105, 0.14);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 80% -10%, rgba(75, 194, 205, 0.17), transparent 34%),
+        radial-gradient(circle at 24% 22%, rgba(153, 224, 97, 0.09), transparent 28%),
+        linear-gradient(135deg, #07111d 0%, #091625 55%, #07111d 100%);
+      min-height: 100vh;
+      transition: background 220ms ease, color 220ms ease;
+    }
+
+    body.light {
+      background:
+        radial-gradient(circle at 82% -10%, rgba(117, 207, 223, 0.24), transparent 33%),
+        radial-gradient(circle at 12% 26%, rgba(172, 219, 119, 0.19), transparent 28%),
+        linear-gradient(135deg, #f7faff 0%, #eef4f9 56%, #f9fbfd 100%);
+    }
+
+    body.light::before { opacity: 0.42; background-image: linear-gradient(rgba(74, 116, 145, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(74, 116, 145, 0.06) 1px, transparent 1px); }
+    body.light .sidebar { background: rgba(255, 255, 255, 0.82); }
+    body.light .brand-mark { color: #ffffff; box-shadow: 0 0 0 5px rgba(95, 143, 39, 0.1), 0 10px 26px rgba(95, 143, 39, 0.16); }
+    body.light .nav-label { color: #65798d; }
+    body.light .nav-btn { color: #40536a; }
+    body.light .nav-btn svg { color: #60788e; }
+    body.light .nav-btn:hover { color: #172638; background: rgba(62, 119, 144, 0.08); }
+    body.light .nav-btn.active { color: #172638; background: linear-gradient(90deg, rgba(123, 177, 54, 0.16), rgba(28, 151, 177, 0.08)); border-color: rgba(95, 143, 39, 0.24); }
+    body.light .profile-chip strong { color: #172638; }
+    body.light .ghost-btn, body.light .icon-btn { color: #40536a; background: rgba(255, 255, 255, 0.76); }
+    body.light .ghost-btn:hover, body.light .icon-btn:hover { color: #172638; background: #ffffff; }
+    body.light .search-box { background: rgba(255, 255, 255, 0.92); }
+    body.light .search-box input::placeholder { color: #718296; }
+    body.light .quick-chip { color: #52677c; background: rgba(255, 255, 255, 0.66); }
+    body.light .stat { background: rgba(255, 255, 255, 0.78); }
+    body.light .view-toggle { background: rgba(255, 255, 255, 0.72); }
+    body.light .sort-select { color: #40536a; background: rgba(255, 255, 255, 0.86); }
+    body.light .project-card:hover { background: rgba(255, 255, 255, 0.96); }
+    body.light .drawer { background: #ffffff; }
+    body.light .score-bar { background: #dbe6ee; }
+    body.light .footer-note { color: #718296; }
+    body.light .toast { background: #e3f5bd; color: #244013; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image: linear-gradient(rgba(152, 190, 220, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(152, 190, 220, 0.06) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: linear-gradient(to bottom, black, transparent 72%);
+    }
+
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+
+    .shell { display: flex; min-height: 100vh; position: relative; }
+    .sidebar {
+      width: 246px;
+      flex: 0 0 246px;
+      min-height: 100vh;
+      padding: 26px 16px 18px;
+      border-right: 1px solid var(--line);
+      background: rgba(7, 17, 29, 0.74);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 10;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 10px 32px; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 12px;
+      display: grid; place-items: center;
+      color: #09131e; background: var(--lime);
+      box-shadow: 0 0 0 5px rgba(200, 242, 105, 0.08), 0 10px 26px rgba(200, 242, 105, 0.18);
+      overflow: hidden;
+    }
+    .brand-mark svg { width: 30px; height: 30px; display: block; }
+    .brand-mark .radar-ring { fill: none; stroke: currentColor; stroke-width: 1.2; opacity: 0.72; }
+    .brand-mark .radar-grid { fill: none; stroke: currentColor; stroke-width: 1; opacity: 0.38; }
+    .brand-mark .radar-sweep { fill: currentColor; opacity: 0.19; }
+    .brand-mark .radar-line { stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; opacity: 0.94; }
+    .brand-mark .radar-node { fill: #73d9e9; stroke: #09131e; stroke-width: 0.8; }
+    .brand-mark .radar-core { fill: #09131e; }
+    body.light .brand-mark .radar-node { fill: #167d96; stroke: #f4f7fb; }
+    body.light .brand-mark .radar-core { fill: #14263a; }
+    .brand-copy strong { display: block; font-size: 14px; letter-spacing: 0.03em; }
+    .brand-copy span { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; }
+
+    .nav-label { color: #597286; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; padding: 0 12px 9px; }
+    .nav { display: grid; gap: 6px; }
+    .nav-btn {
+      border: 1px solid transparent; background: transparent; color: var(--muted-strong);
+      display: flex; align-items: center; gap: 11px; width: 100%; padding: 11px 12px;
+      border-radius: 11px; text-align: left; font-size: 13px; transition: 180ms ease;
+    }
+    .nav-btn svg { width: 16px; height: 16px; color: #7590a7; }
+    .nav-btn:hover { color: var(--text); background: rgba(130, 173, 206, 0.07); }
+    .nav-btn.active { color: var(--text); background: linear-gradient(90deg, rgba(200,242,105,0.16), rgba(115,217,233,0.06)); border-color: rgba(200,242,105,0.2); box-shadow: inset 3px 0 0 var(--lime); }
+    .nav-btn.active svg { color: var(--lime); }
+    .sidebar-spacer { flex: 1; }
+    .profile-chip { display: flex; gap: 10px; align-items: center; border-top: 1px solid var(--line); padding: 18px 8px 4px; }
+    .avatar { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; background: linear-gradient(135deg, #2e536d, #172b40); color: var(--cyan); font-size: 11px; font-weight: 800; }
+    .profile-chip strong { display: block; font-size: 12px; }
+    .profile-chip span { display: block; color: var(--muted); font-size: 10px; margin-top: 2px; }
+
+    .main { flex: 1; min-width: 0; padding: 25px 34px 42px; max-width: 1700px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 28px; }
+    .crumbs { color: var(--muted); font-size: 12px; }
+    .crumbs strong { color: var(--text); font-weight: 600; }
+    .top-actions { display: flex; align-items: center; gap: 9px; }
+    .ghost-btn, .primary-btn, .icon-btn {
+      border-radius: 10px; border: 1px solid var(--line); color: var(--muted-strong); background: rgba(18, 35, 56, 0.68);
+      min-height: 37px; padding: 0 13px; transition: 180ms ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .ghost-btn:hover, .icon-btn:hover { color: var(--text); border-color: var(--line-strong); background: rgba(30, 55, 82, 0.82); }
+    .primary-btn { border-color: transparent; background: var(--lime); color: #09131e; font-weight: 800; }
+    .primary-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(200,242,105,0.17); }
+    .icon-btn { width: 37px; padding: 0; }
+    .icon-btn svg, .ghost-btn svg, .primary-btn svg { width: 15px; height: 15px; }
+
+    .hero { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr); gap: 22px; margin-bottom: 21px; }
+    .hero-card, .agent-card, .panel, .project-card { border: 1px solid var(--line); background: var(--panel); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+    .hero-card { border-radius: var(--radius-xl); padding: 35px 35px 32px; overflow: hidden; position: relative; }
+    .hero-card::after { content: ""; position: absolute; width: 380px; height: 380px; right: -150px; top: -160px; border-radius: 50%; border: 1px solid rgba(200,242,105,0.18); box-shadow: 0 0 0 32px rgba(200,242,105,0.02), 0 0 0 65px rgba(200,242,105,0.015); pointer-events: none; }
+    .eyebrow { color: var(--lime); text-transform: uppercase; letter-spacing: 0.16em; font-size: 10px; font-weight: 800; margin-bottom: 16px; }
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: clamp(34px, 5vw, 63px); line-height: 0.96; letter-spacing: -0.07em; max-width: 710px; }
+    .hero-copy { color: var(--muted-strong); max-width: 635px; line-height: 1.65; font-size: 14px; margin-top: 18px; }
+    .search-row { display: flex; gap: 10px; margin-top: 27px; position: relative; z-index: 1; }
+    .search-box { flex: 1; min-width: 0; display: flex; align-items: center; gap: 11px; padding: 0 15px; border: 1px solid var(--line-strong); background: rgba(6, 16, 27, 0.75); border-radius: 12px; min-height: 49px; }
+    .search-box svg { color: var(--cyan); width: 18px; height: 18px; flex: 0 0 auto; }
+    .search-box input { border: 0; outline: 0; background: transparent; color: var(--text); width: 100%; font-size: 14px; }
+    .search-box input::placeholder { color: #60758a; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .quick-chip { color: var(--muted); border: 1px solid var(--line); background: rgba(18,35,56,0.48); border-radius: 999px; padding: 7px 10px; font-size: 11px; cursor: pointer; transition: 160ms ease; }
+    .quick-chip:hover { color: var(--lime); border-color: rgba(200,242,105,0.36); }
+
+    .agent-card { border-radius: var(--radius-xl); padding: 24px; position: relative; overflow: hidden; }
+    .agent-card::before { content: ""; position: absolute; inset: auto -30px -80px auto; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(115,217,233,0.24), transparent 68%); }
+    .agent-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+    .agent-title { display: flex; align-items: center; gap: 10px; }
+    .agent-orb { width: 32px; height: 32px; border: 1px solid rgba(115,217,233,0.46); border-radius: 10px; display: grid; place-items: center; color: var(--cyan); background: var(--cyan-soft); }
+    .agent-orb svg { width: 17px; height: 17px; }
+    .agent-title strong { display: block; font-size: 14px; }
+    .agent-title span { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; }
+    .status-dot { display: inline-flex; align-items: center; gap: 6px; color: var(--lime); font-size: 10px; white-space: nowrap; }
+    .status-dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 4px rgba(200,242,105,0.1); }
+    .agent-message { color: var(--muted-strong); font-size: 13px; line-height: 1.55; margin-top: 25px; }
+    .agent-steps { display: grid; gap: 12px; margin-top: 23px; }
+    .agent-step { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; }
+    .agent-step i { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line-strong); font-style: normal; font-size: 10px; color: var(--muted); }
+    .agent-step.done { color: var(--muted-strong); }
+    .agent-step.done i { background: var(--lime-soft); border-color: rgba(200,242,105,0.34); color: var(--lime); }
+    .agent-step.active { color: var(--cyan); }
+    .agent-step.active i { border-color: rgba(115,217,233,0.48); color: var(--cyan); animation: pulse 1.7s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 5px rgba(115,217,233,0.08); } }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat { padding: 17px 18px; border-radius: 15px; background: rgba(17, 34, 52, 0.62); border: 1px solid var(--line); }
+    .stat small { color: var(--muted); display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.11em; }
+    .stat-row { display: flex; align-items: end; justify-content: space-between; margin-top: 11px; }
+    .stat strong { font-size: 25px; letter-spacing: -0.05em; }
+    .stat em { color: var(--lime); font-size: 10px; font-style: normal; }
+    .stat:nth-child(2) em { color: var(--cyan); }
+    .stat:nth-child(3) em { color: var(--orange); }
+    .stat:nth-child(4) em { color: var(--red); }
+
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 15px; }
+    .section-head h2 { font-size: 20px; letter-spacing: -0.04em; }
+    .section-head p { color: var(--muted); font-size: 12px; margin-top: 6px; }
+    .view-toggle { display: flex; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: rgba(5,14,24,0.42); }
+    .view-toggle button { border: 0; border-radius: 6px; color: var(--muted); background: transparent; padding: 7px 9px; display: grid; place-items: center; }
+    .view-toggle button.active { color: var(--text); background: var(--panel-strong); }
+    .view-toggle svg { width: 15px; height: 15px; }
+    .refresh-results { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); color: var(--muted-strong); background: transparent; padding: 8px 11px; border-radius: 8px; font-size: 12px; }
+    .refresh-results:hover { color: var(--cyan); border-color: rgba(115,217,233,0.36); }
+    .refresh-results svg { width: 14px; height: 14px; }
+    .refresh-results.loading svg { animation: spin 800ms linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    .filter-btn { border: 1px solid var(--line); color: var(--muted); background: transparent; padding: 8px 11px; border-radius: 8px; font-size: 11px; }
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--lime); border-color: rgba(200,242,105,0.35); background: var(--lime-soft); }
+    .sort-select { border: 1px solid var(--line); color: var(--muted-strong); background: rgba(14,29,45,0.78); border-radius: 8px; padding: 8px 10px; font-size: 11px; outline: none; }
+
+    .project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+    .project-grid.list-view { display: flex; flex-direction: column; gap: 9px; }
+    .project-grid.list-view .project-card { display: grid; grid-template-columns: 44px minmax(170px, 0.85fr) minmax(250px, 1.35fr) minmax(210px, 0.9fr) auto; align-items: center; gap: 15px; padding: 15px 17px; min-height: 108px; }
+    .project-grid.list-view .project-top { display: contents; }
+    .project-grid.list-view .project-icon { grid-column: 1; grid-row: 1 / span 4; }
+    .project-grid.list-view .bookmark { position: absolute; top: 13px; right: 13px; }
+    .project-grid.list-view .project-name { grid-column: 2; grid-row: 1; margin-top: 0; padding-right: 24px; font-size: 16px; }
+    .project-grid.list-view .project-owner-main { grid-column: 2; grid-row: 2; margin-top: 3px; font-size: 12px; }
+    .project-grid.list-view .project-desc { grid-column: 3; grid-row: 1 / span 2; min-height: 0; margin-top: 0; font-size: 13px; line-height: 1.55; }
+    .project-grid.list-view .tag-row { grid-column: 4; grid-row: 1; margin-top: 0; }
+    .project-grid.list-view .project-meta { grid-column: 4; grid-row: 2; margin-top: 8px; padding-top: 0; border-top: 0; }
+    .project-grid.list-view .project-owner-facts { grid-column: 3; grid-row: 3; margin-top: 7px; font-size: 11px; }
+    .project-grid.list-view .card-actions { grid-column: 5; grid-row: 1 / span 4; min-width: 122px; margin-top: 0; flex-direction: column; }
+    .project-card { border-radius: var(--radius-lg); padding: 18px; box-shadow: none; transition: 200ms ease; position: relative; overflow: hidden; animation: rise 340ms both; }
+    .project-card:hover { transform: translateY(-3px); border-color: rgba(115,217,233,0.33); background: rgba(20, 39, 59, 0.92); }
+    @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .project-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+    .project-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px; font-weight: 900; font-size: 13px; color: var(--cyan); background: linear-gradient(135deg, rgba(115,217,233,0.22), rgba(115,217,233,0.05)); border: 1px solid rgba(115,217,233,0.2); }
+    .bookmark { border: 0; background: transparent; color: #637c90; padding: 4px; }
+    .bookmark.active { color: var(--lime); }
+    .bookmark svg { width: 17px; height: 17px; }
+    .project-name { margin-top: 17px; font-size: 15px; letter-spacing: -0.03em; }
+    .project-owner { color: var(--muted); font: 11px var(--mono); margin-top: 4px; }
+    .project-desc { color: var(--muted-strong); font-size: 13px; line-height: 1.65; height: 64px; min-height: 64px; margin-top: 14px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; word-break: break-word; overflow-wrap: anywhere; }
+    .project-desc.is-suspicious { color: var(--muted); font-style: italic; }
+    .project-zh-summary { height: 43px; margin-top: 8px; color: var(--cyan); font-size: 12px; line-height: 1.65; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+    .project-zh-summary strong { color: var(--lime); font-weight: 800; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tag { border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 5px 8px; font-size: 11px; }
+    .tag.accent { color: var(--cyan); border-color: rgba(115,217,233,0.26); background: var(--cyan-soft); }
+    .tag.lime { color: var(--lime); border-color: rgba(200,242,105,0.26); background: var(--lime-soft); }
+    .project-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 17px; padding-top: 14px; border-top: 1px solid var(--line); }
+    .meta-item small { color: var(--muted); display: block; font-size: 10px; }
+    .meta-item strong { display: block; margin-top: 5px; font-size: 13px; }
+    .card-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .card-actions a, .card-actions button { flex: 1; min-height: 37px; border-radius: 8px; font-size: 11px; border: 1px solid var(--line); background: transparent; color: var(--muted-strong); display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+    .card-actions a:hover, .card-actions button:hover { border-color: rgba(115,217,233,0.36); color: var(--cyan); }
+    .card-actions .analyze-btn { border-color: rgba(200,242,105,0.25); color: var(--lime); background: var(--lime-soft); }
+    .card-actions svg { width: 13px; height: 13px; }
+
+    .empty { padding: 54px 22px; border: 1px dashed var(--line-strong); border-radius: var(--radius-lg); text-align: center; color: var(--muted); grid-column: 1 / -1; }
+    .empty strong { display: block; color: var(--text); margin-bottom: 7px; }
+
+    .footer-note { color: #597286; font-size: 10px; margin-top: 24px; text-align: center; }
+
+    .drawer-backdrop { position: fixed; inset: 0; background: rgba(1, 7, 13, 0.62); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: 200ms ease; z-index: 20; }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+    .drawer { position: fixed; z-index: 21; top: 0; right: 0; height: 100vh; width: min(490px, 100%); border-left: 1px solid var(--line-strong); background: #0b1928; transform: translateX(100%); transition: 240ms cubic-bezier(.2,.8,.2,1); padding: 25px; overflow-y: auto; }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head { display: flex; justify-content: space-between; align-items: start; gap: 16px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+    .drawer-head h2 { font-size: 24px; letter-spacing: -0.05em; }
+    .drawer-head p { color: var(--muted); font-size: 11px; margin-top: 6px; }
+    .run-status { margin: 18px 0 0; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel-soft); }
+    .run-status-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .run-status-title { display: flex; align-items: center; gap: 8px; color: var(--text); font-size: 12px; font-weight: 800; }
+    .run-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 4px var(--cyan-soft); }
+    .run-status.is-running .run-status-dot { animation: pulse 1.2s infinite; }
+    .run-status.is-done .run-status-dot { background: var(--lime); box-shadow: 0 0 0 4px var(--lime-soft); }
+    .run-status.is-error .run-status-dot { background: var(--red); box-shadow: 0 0 0 4px rgba(195,77,101,0.14); }
+    .run-status-percent { color: var(--cyan); font: 12px var(--mono); }
+    .run-status.is-done .run-status-percent { color: var(--lime); }
+    .run-status.is-error .run-status-percent { color: var(--red); }
+    .run-status-bar { height: 5px; margin-top: 11px; border-radius: 99px; overflow: hidden; background: var(--line-strong); }
+    .run-status-bar span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), var(--lime)); transition: width 260ms ease; }
+    .run-status-detail { margin-top: 8px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .run-status-retry { display: none; margin-top: 10px; border: 1px solid var(--line-strong); border-radius: 7px; padding: 6px 9px; color: var(--cyan); background: transparent; font-size: 11px; cursor: pointer; }
+    .run-status.is-error .run-status-retry { display: inline-flex; }
+    .drawer-section { padding: 22px 0; border-bottom: 1px solid var(--line); }
+    .drawer-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.13em; color: var(--cyan); }
+    .drawer-section p { color: var(--muted-strong); font-size: 13px; line-height: 1.7; margin-top: 12px; }
+    .score-list { display: grid; gap: 13px; margin-top: 16px; }
+    .score-row { display: grid; grid-template-columns: 100px 1fr 35px; align-items: center; gap: 10px; color: var(--muted-strong); font-size: 11px; }
+    .score-bar { height: 6px; background: #1a3146; border-radius: 99px; overflow: hidden; }
+    .score-bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--lime)); border-radius: inherit; }
+    .score-row strong { text-align: right; color: var(--lime); font-size: 11px; }
+    .recommendation { display: flex; align-items: start; gap: 10px; margin-top: 17px; padding: 14px; border: 1px solid rgba(200,242,105,0.22); border-radius: 12px; background: var(--lime-soft); }
+    .recommendation svg { flex: 0 0 auto; width: 18px; height: 18px; color: var(--lime); }
+    .recommendation strong { font-size: 12px; color: var(--lime); }
+    .recommendation p { margin-top: 5px; font-size: 11px; line-height: 1.55; color: var(--muted-strong); }
+    .drawer-actions { display: flex; gap: 9px; margin-top: 22px; }
+    .drawer-actions > * { flex: 1; }
+    .readme-preview { margin-top: 15px; }
+    .readme-status { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .readme-code { max-height: 250px; overflow: auto; white-space: pre-wrap; word-break: break-word; margin: 12px 0 0; padding: 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-soft); color: var(--muted-strong); font: 11px/1.65 var(--mono); }
+    .repo-facts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 13px; }
+    .repo-fact { color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 5px 7px; font-size: 10px; }
+    .agent-evidence { margin-top: 15px; color: var(--muted-strong); font-size: 11px; line-height: 1.6; }
+    .agent-evidence strong { display: block; color: var(--cyan); margin-bottom: 6px; }
+    .agent-evidence ul { margin: 0; padding-left: 17px; }
+    .score-help { margin-top: 10px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+    .plain-summary { color: var(--muted-strong); font-size: 13px; line-height: 1.7; }
+    .plain-grid { display: grid; gap: 10px; margin-top: 14px; }
+    .plain-item { padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel-soft); }
+    .plain-item strong { display: block; color: var(--cyan); font-size: 11px; margin-bottom: 4px; }
+    .plain-item p { margin: 0; color: var(--muted-strong); font-size: 12px; line-height: 1.55; }
+    .readme-toggle { margin-top: 2px; color: var(--cyan); background: transparent; border: 0; padding: 0; font: inherit; font-size: 11px; cursor: pointer; }
+    .readme-toggle:hover { color: var(--lime); }
+    .readme-code[hidden] { display: none; }
+    .chat-section { padding-bottom: 8px; }
+    .chat-status { display: flex; align-items: center; gap: 8px; margin-top: 11px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .chat-status-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--muted); }
+    .chat-status.is-running { color: var(--cyan); }
+    .chat-status.is-running .chat-status-dot { background: var(--cyan); box-shadow: 0 0 0 4px var(--cyan-soft); animation: pulse 1.2s infinite; }
+    .chat-status.is-done { color: var(--lime); }
+    .chat-status.is-done .chat-status-dot { background: var(--lime); box-shadow: 0 0 0 4px var(--lime-soft); }
+    .chat-status.is-error { color: var(--red); }
+    .chat-status.is-error .chat-status-dot { background: var(--red); box-shadow: 0 0 0 4px rgba(195,77,101,0.14); }
+    .chat-retry { display: none; margin-left: auto; border: 1px solid var(--line-strong); border-radius: 7px; padding: 5px 8px; color: var(--cyan); background: transparent; font-size: 10px; cursor: pointer; }
+    .chat-status.is-error .chat-retry { display: inline-flex; }
+    .chat-messages { display: grid; gap: 9px; max-height: 280px; overflow-y: auto; margin-top: 12px; }
+    .chat-message { max-width: 91%; padding: 10px 12px; border-radius: 11px; color: var(--muted-strong); font-size: 13px; line-height: 1.7; white-space: pre-wrap; }
+    .chat-message.agent { justify-self: start; background: var(--panel-soft); border: 1px solid var(--line); }
+    .chat-message.user { justify-self: end; color: #09131e; background: var(--lime); }
+    .chat-form { display: flex; gap: 8px; margin-top: 12px; }
+    .chat-input { flex: 1; min-width: 0; min-height: 40px; resize: vertical; border: 1px solid var(--line-strong); border-radius: 9px; padding: 9px 11px; outline: none; background: var(--panel-soft); color: var(--text); font-size: 12px; }
+    .chat-input:focus { border-color: var(--cyan); }
+    .chat-send { flex: 0 0 auto; min-height: 40px; padding: 0 12px; border: 0; border-radius: 9px; color: #09131e; background: var(--lime); font-size: 11px; font-weight: 800; }
+    .chat-note { margin-top: 8px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+
+    .toast { position: fixed; z-index: 40; left: 50%; bottom: 24px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #dfffa8; color: #13200c; border-radius: 999px; padding: 10px 16px; font-weight: 800; font-size: 12px; box-shadow: 0 12px 28px rgba(0,0,0,0.3); transition: 200ms ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    .mobile-menu { display: none; }
+    @media (max-width: 1180px) { .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { grid-template-columns: 1fr; } }
+    @media (max-width: 820px) { .sidebar { width: 72px; flex-basis: 72px; padding: 18px 9px; } .brand { justify-content: center; padding: 0 0 26px; } .brand-copy, .nav-label, .nav-btn span, .profile-chip > div:not(.avatar) { display: none; } .nav-btn { justify-content: center; padding: 12px 0; } .profile-chip { justify-content: center; padding-left: 0; padding-right: 0; } .main { padding: 20px 18px 32px; } .project-grid.list-view .project-card { grid-template-columns: 40px 1fr auto; } .project-grid.list-view .project-desc { grid-column: 2 / span 2; grid-row: 3; } .project-grid.list-view .tag-row { grid-column: 2; grid-row: 2; } .project-grid.list-view .project-meta { grid-column: 3; grid-row: 2; } .project-grid.list-view .project-owner-facts { display: none; } .project-grid.list-view .card-actions { grid-column: 3; grid-row: 1; min-width: 88px; } }
+    @media (max-width: 590px) { .topbar { align-items: flex-start; } .top-actions .ghost-btn { display: none; } .mobile-menu { display: inline-flex; } .stats { grid-template-columns: repeat(2, 1fr); } .project-grid { grid-template-columns: 1fr; } .project-grid.list-view .project-card { display: grid; grid-template-columns: 38px 1fr; gap: 10px; } .project-grid.list-view .project-icon { grid-column: 1; grid-row: 1 / span 3; } .project-grid.list-view .project-name, .project-grid.list-view .project-owner, .project-grid.list-view .project-desc, .project-grid.list-view .tag-row, .project-grid.list-view .project-meta, .project-grid.list-view .card-actions { grid-column: 2; grid-row: auto; } .project-grid.list-view .project-desc { margin-top: 2px; } .project-grid.list-view .project-meta { display: flex; gap: 15px; } .project-grid.list-view .card-actions { flex-direction: row; min-width: 0; } .hero-card { padding: 26px 22px 24px; } .search-row { flex-direction: column; } .search-row .primary-btn { min-height: 46px; } .toolbar { align-items: flex-start; flex-direction: column; } .section-head { align-items: flex-start; } h1 { font-size: 42px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-label="开源项目雷达 Logo" role="img">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <path class="radar-sweep" d="M20 20 35.2 10.2A18 18 0 0 1 37.6 20H20Z" />
+            <circle class="radar-ring" cx="20" cy="20" r="15" />
+            <circle class="radar-ring" cx="20" cy="20" r="9" />
+            <path class="radar-grid" d="M5 20h30M20 5v30" />
+            <path class="radar-line" d="M20 20 31 11" />
+            <circle class="radar-node" cx="31" cy="11" r="2.1" />
+            <circle class="radar-node" cx="12" cy="27" r="1.7" />
+            <circle class="radar-core" cx="20" cy="20" r="2.2" />
+          </svg>
+        </div>
+        <div class="brand-copy"><strong>开源项目雷达</strong><span>RADAR / v0.1 演示版</span></div>
+      </div>
+      <div class="nav-label">工作区</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-nav="discover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>发现项目</span></button>
+        <button class="nav-btn" data-nav="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4.5A2.5 2.5 0 0 1 8.5 2h9A2.5 2.5 0 0 1 20 4.5V21l-7-4-7 4V4.5Z"/></svg><span>我的收藏</span></button>
+        <button class="nav-btn" data-nav="compare"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5m0 14h16M8 16v-5m4 5V7m4 9v-8"/></svg><span>项目对比</span></button>
+        <button class="nav-btn" data-nav="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>研究笔记</span></button>
+      </nav>
+      <div class="nav-label" style="margin-top: 28px;">系统</div>
+      <nav class="nav">
+        <button class="nav-btn" id="demoModeBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><span>演示模式 <b style="font-size:9px;color:var(--lime);font-weight:600">开启</b></span></button>
+        <button class="nav-btn" id="resetBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 12a8 8 0 1 0 2.34-5.66"/><path d="M4 4v6h6"/></svg><span>清除本地数据</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="profile-chip"><div class="avatar">访</div><div><strong id="guestLabel">游客工作区</strong><span id="guestNote">数据保存在当前浏览器</span></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="crumbs"><span id="crumbWorkspace">工作区</span> <span>/</span> <strong id="crumbPage">发现项目</strong></div>
+        <div class="top-actions"><button class="ghost-btn" id="themeToggle" title="切换主题"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg><span id="themeLabel">浅色</span></button><button class="ghost-btn" id="languageToggle">EN</button><button class="ghost-btn" id="exportBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 20h14"/></svg><span id="exportLabel">导出本地数据</span></button><button class="icon-btn mobile-menu" aria-label="打开菜单"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="primary-btn" id="accountBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21a8 8 0 0 0-16 0M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/></svg><span id="accountLabel">稍后登录</span></button></div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-card">
+          <div class="eyebrow" id="heroEyebrow">AI 辅助项目发现</div>
+          <h1 id="heroTitle">找到下一个<br><span style="color:var(--lime)">值得构建的项目。</span></h1>
+          <p class="hero-copy" id="heroCopy">搜索开源项目，理解 Star 数背后的真实信号，把一个好项目变成下一个可落地的作品。</p>
+          <div class="search-row">
+            <label class="search-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="searchInput" type="search" placeholder="例如：AI Agent、数据看板、效率工具……" autocomplete="off" /></label>
+            <button class="primary-btn" id="searchBtn"><span id="searchLabel">搜索雷达</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <div class="hero-chips"><button class="quick-chip" data-query="AI agent dashboard">AI Agent 工具</button><button class="quick-chip" data-query="local-first app">本地优先应用</button><button class="quick-chip" data-query="developer productivity">开发者效率</button><button class="quick-chip" data-query="data visualization">数据可视化</button></div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-head"><div class="agent-title"><div class="agent-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1m-8.6 8.6-2.1 2.1"/><circle cx="12" cy="12" r="4"/></svg></div><div><strong id="agentName">雷达 Agent</strong><span id="agentMode">受约束的评估模式</span></div></div><span class="status-dot" id="agentStatus">演示就绪</span></div>
+          <p class="agent-message" id="agentMessage">I will compare activity, documentation, build effort, and portfolio value before making a recommendation.</p>
+          <div class="agent-steps"><div class="agent-step done"><i>✓</i><span id="stepOne">理解搜索意图</span></div><div class="agent-step done"><i>✓</i><span id="stepTwo">整理项目信号</span></div><div class="agent-step active" id="agentActiveStep"><i>3</i><span id="stepThree">评估构建潜力</span></div><div class="agent-step"><i>4</i><span id="stepFour">生成下一步建议</span></div></div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="工作区统计"><div class="stat"><small id="statScanned">已扫描项目</small><div class="stat-row"><strong id="scannedCount">24</strong><em id="statGrowth">+12%</em></div></div><div class="stat"><small id="statSaved">已收藏项目</small><div class="stat-row"><strong id="savedCount">06</strong><em id="statLocal">本地</em></div></div><div class="stat"><small id="statBuildable">当前可构建</small><div class="stat-row"><strong>08</strong><em id="statSignal">高信号</em></div></div><div class="stat"><small id="statDemo">演示模式</small><div class="stat-row"><strong id="statOn">开启</strong><em id="statConfig">零配置</em></div></div></section>
+
+      <section class="section-head"><div><h2 id="sectionTitle">值得研究的项目</h2><p id="sectionSubtitle">精选演示结果 · 数据保存在本地 · 无需 API Key</p></div><div style="display:flex;align-items:center;gap:8px"><button class="refresh-results" id="refreshResults" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5"/></svg><span id="refreshLabel">换一批</span></button><div class="view-toggle"><button class="active" data-view="grid" aria-label="网格视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button data-view="list" aria-label="列表视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div></div></section>
+      <section class="toolbar"><div class="filters"><button class="filter-btn active" data-filter="all">全部项目</button><button class="filter-btn" data-filter="AI">AI / Agent</button><button class="filter-btn" data-filter="Productivity">效率工具</button><button class="filter-btn" data-filter="Dashboard">数据看板</button><button class="filter-btn" data-filter="Local-first">本地优先</button></div><select class="sort-select" id="sortSelect" aria-label="项目排序"><option value="signal">按信号评分</option><option value="stars">按 GitHub Star</option><option value="recent">按最近活跃</option></select></section>
+      <section class="project-grid" id="projectGrid"></section>
+      <p class="footer-note" id="footerNote">当前为本地演示数据。后续连接 GitHub 和 Agent API 后即可启用实时模式。</p>
+    </main>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="analysisDrawer" aria-label="项目分析面板">
+    <div class="drawer-head"><div><div class="eyebrow" style="margin-bottom:10px" id="drawerEyebrow">Agent 分析</div><h2 id="drawerTitle">项目分析</h2><p id="drawerOwner">项目综合信号报告</p></div><button class="icon-btn" id="closeDrawer" aria-label="关闭分析"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <div class="run-status is-running" id="runStatus"><div class="run-status-head"><div class="run-status-title"><i class="run-status-dot"></i><span id="runStatusTitle">正在准备分析</span></div><strong class="run-status-percent" id="runStatusPercent">0%</strong></div><div class="run-status-bar"><span id="runStatusBar"></span></div><p class="run-status-detail" id="runStatusDetail">正在连接 GitHub，准备读取项目资料。</p><button class="run-status-retry" id="runStatusRetry" type="button">重新分析</button></div>
+    <div class="drawer-section"><h3 id="recommendationTitle">推荐动作</h3><div class="recommendation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><div><strong id="drawerRecommendation">Build a focused prototype</strong><p id="drawerReason">A clear feature boundary and strong visual surface make this a good next project.</p></div></div><div class="plain-grid"><div class="plain-item"><strong id="summaryLabel">一句话说明</strong><p class="plain-summary" id="drawerSummary">这个项目是做什么的，会在这里用简单的话说明。</p></div><div class="plain-item"><strong id="fitLabel">适合谁</strong><p id="drawerFit">当前资料不足以确认，建议先查看项目文档和 Demo。</p></div><div class="plain-item"><strong id="prosLabel">主要优点</strong><p id="drawerPros">等待 Agent 根据项目资料总结。</p></div><div class="plain-item"><strong id="watchLabel">需要注意</strong><p id="drawerWatch">等待 Agent 根据项目资料总结。</p></div></div></div>
+    <div class="drawer-section"><h3 id="scoreTitle">这个项目怎么样</h3><div class="score-list" id="scoreList"></div><p class="score-help" id="scoreHelp">分数越高，表示越值得优先了解；它不是项目质量的绝对结论。</p><div class="repo-facts" id="repoFacts"></div><div class="agent-evidence" id="agentEvidence"></div></div>
+    <div class="drawer-section readme-preview"><button class="readme-toggle" id="readmeToggle" type="button">查看 README 原文</button><p class="readme-status" id="readmeStatus" hidden>README 原文仅用于核对来源，不作为主要分析内容。</p><pre class="readme-code" id="readmeCode" hidden></pre></div>
+    <div class="drawer-section"><h3 id="nextTitle">下一步建议</h3><p id="drawerNextAction">先打开在线 Demo，梳理主要用户流程，再选择一个足够小的功能开始迭代。</p></div>
+    <div class="drawer-section chat-section"><h3 id="chatTitle">继续问 Agent</h3><div class="chat-status" id="chatStatus"><i class="chat-status-dot"></i><span id="chatStatusText">等待你的问题</span><button class="chat-retry" id="chatRetry" type="button">重新发送</button></div><div class="chat-messages" id="chatMessages"></div><form class="chat-form" id="chatForm"><textarea class="chat-input" id="chatInput" rows="2" placeholder="例如：这个项目适合我现在做吗？"></textarea><button class="chat-send" id="chatSend" type="submit">发送</button></form><p class="chat-note" id="chatNote">只围绕当前仓库、README 和分析结果回答，不执行本地操作。</p></div>
+    <div class="drawer-actions"><a class="ghost-btn" id="drawerRepo" href="#" target="_blank" rel="noreferrer">查看仓库</a><button class="primary-btn" id="drawerSave">保存到雷达</button></div>
+  </aside>
+  <div class="toast" id="toast">已保存在本地</div>
+
+  <script>
+    const projects = [
+      { id: 'agentflow', name: 'AgentFlow Studio', owner: 'northstar-labs', icon: 'AF', description: 'Visual canvas for composing AI tasks, tools, and approval steps into repeatable workflows.', tags: ['AI', 'Workflow'], language: 'TypeScript', stars: 1840, updated: '2 days ago', signal: 94, action: '二次改造', repo: '# ', scores: { activity: 92, docs: 82, effort: 71, utility: 95, portfolio: 94 }, reason: 'The concept is easy to understand at a glance and has enough surface area for a distinctive AI product.', next: 'Study the node editor and recreate one small flow: search → evaluate → recommend.' },
+      { id: 'memospace', name: 'MemoSpace', owner: 'local-labs', icon: 'MS', description: 'A calm local-first workspace for capturing notes, tags, and small research trails without an account.', tags: ['Local-first', 'Productivity'], language: 'JavaScript', stars: 960, updated: '5 days ago', signal: 88, action: '直接使用', repo: '# ', scores: { activity: 84, docs: 78, effort: 90, utility: 86, portfolio: 79 }, reason: 'Local persistence makes the first version easy to ship and gives the product a clear privacy story.', next: 'Prototype local collections, saved filters, and an import/export flow.' },
+      { id: 'signalboard', name: 'Signalboard', owner: 'metric-room', icon: 'SB', description: 'A compact analytics dashboard that turns messy project signals into clear decisions and trends.', tags: ['Dashboard', 'Data'], language: 'React', stars: 3210, updated: '1 week ago', signal: 91, action: '借鉴 UI', repo: '# ', scores: { activity: 90, docs: 88, effort: 66, utility: 91, portfolio: 93 }, reason: 'Its strongest asset is information hierarchy: dense data is turned into a readable visual story.', next: 'Borrow the card hierarchy, chart framing, and empty states for the Radar dashboard.' },
+      { id: 'shipyard', name: 'Shipyard Notes', owner: 'build-small', icon: 'SY', description: 'A lightweight project launchpad for planning milestones, links, decisions, and release notes.', tags: ['Productivity', 'Local-first'], language: 'TypeScript', stars: 740, updated: '3 weeks ago', signal: 81, action: '二次改造', repo: '# ', scores: { activity: 75, docs: 83, effort: 86, utility: 84, portfolio: 76 }, reason: 'The scope is small enough to finish while still showing real product thinking and useful state design.', next: 'Turn the project list into a personal build queue with status and milestones.' },
+      { id: 'openui-kit', name: 'Open UI Kit', owner: 'interface-foundry', icon: 'UI', description: 'A polished set of accessible primitives and layout patterns for serious internal tools.', tags: ['Dashboard', 'UI'], language: 'CSS', stars: 2120, updated: '1 month ago', signal: 79, action: '借鉴 UI', repo: '# ', scores: { activity: 78, docs: 94, effort: 62, utility: 81, portfolio: 86 }, reason: 'The component language is reusable and makes a strong reference when building a product with a clear visual identity.', next: 'Extract spacing, typography, and empty-state patterns; do not copy the whole shell.' },
+      { id: 'repoatlas', name: 'Repo Atlas', owner: 'map-the-code', icon: 'RA', description: 'Explore repository relationships, languages, and dependencies through an interactive map.', tags: ['Dashboard', 'Data'], language: 'Python', stars: 1280, updated: '2 months ago', signal: 76, action: '暂不研究', repo: '# ', scores: { activity: 69, docs: 70, effort: 56, utility: 80, portfolio: 89 }, reason: 'Visually ambitious, but the first version would require more data processing than the current Radar MVP needs.', next: 'Keep it as a reference for a later network-graph or dependency-map feature.' }
+    ];
+
+    let activeProjects = projects;
+    const state = {
+      query: '', filter: 'all', sort: 'signal', view: 'grid', savedOnly: false, liveMode: false,
+      saved: JSON.parse(localStorage.getItem('os-radar-saved') || '[]'), activeProject: null,
+      language: localStorage.getItem('os-radar-language') || 'zh',
+      theme: localStorage.getItem('os-radar-theme') || 'dark'
+    };
+
+    const copy = {
+      zh: {
+        searchButton: '搜索雷达', themeLight: '浅色', themeDark: '深色', export: '导出本地数据', account: '稍后登录',
+        workspace: '工作区', discover: '发现项目', saved: '我的收藏', compare: '项目对比', notes: '研究笔记', demo: '演示模式', reset: '清除本地数据',
+        guest: '游客工作区', guestNote: '数据保存在当前浏览器', eyebrow: 'AI 辅助项目发现', heroTitleFirst: '找到下一个', heroTitleSecond: '值得构建的项目。', heroCopy: '搜索开源项目，理解 Star 数背后的真实信号，把一个好项目变成下一个可落地的作品。', quickChips: ['AI Agent 工具', '本地优先应用', '开发者效率', '数据可视化'], searchPlaceholder: '例如：AI Agent、数据看板、效率工具……',
+        agentMode: '简单易懂的项目评估', agentReady: '演示就绪', agentName: '雷达 Agent', agentMessage: '我会用简单的话说明这个项目是什么、值不值得用，以及你可以先做什么。',
+        steps: ['理解你的搜索', '查看项目资料', '判断是否适合你', '给出具体建议'], scanned: '本次找到项目', savedCount: '已保存项目', buildable: '适合先试', local: '保存在浏览器', highSignal: '仅作参考', demoLabel: '当前模式', on: '本地演示', zeroConfig: '无需登录',
+        section: '值得研究的项目', subtitle: '精选演示结果 · 数据保存在本地 · 无需 API Key', all: '全部项目', productivity: '效率工具', dashboard: '数据看板', localFirst: '本地优先', sortSignal: '按综合参考排序', sortStars: '按 GitHub Star', sortRecent: '按最近更新',
+        footer: '当前为本地演示数据。点击搜索后可查询 GitHub 公开仓库；Agent API 将在后续版本接入。', refresh: '换一批', liveResults: '实时 GitHub 结果 · 公开仓库 · Agent 分析尚未接入', liveError: 'GitHub 暂时无法访问，已保留本地演示结果。', searching: '正在搜索 GitHub…', recommendation: '推荐动作', score: '这个项目怎么样', scoreHelp: '分数越高，表示越值得优先了解；它不是项目质量的绝对结论。', next: '下一步建议', chatTitle: '继续问 Agent', chatPlaceholder: '例如：这个项目适合我现在做吗？', chatSend: '发送', chatNote: '只围绕当前仓库、README 和分析结果回答，不执行本地操作。', repo: '查看仓库', save: '保存到雷达', savedLocal: '已保存到本地', remove: '已从本地移除', resetDone: '本地雷达已清除', accountSoon: '账户同步将在本地优先版本之后加入。', demoOn: '当前已是演示模式', noSignal: '没有匹配信号', tryAgain: '请换一个关键词或清除当前筛选。', emptySaved: '还没有收藏项目', emptySavedNote: '在“发现项目”中收藏后，项目会保存在当前浏览器。', staged: '该模块将在下一版本开放', stagedNote: '当前 Demo 先保留导航结构，为后续 Agent 工作流预留位置。', results: '搜索结果', ranked: '演示模式 · 按项目综合信号排序', savedTitle: '我的收藏', savedSubtitle: '仅保存在本地 · 无需登录即可使用', compareTitle: '项目对比即将开放', notesTitle: '研究笔记即将开放', shellNote: '前端骨架已准备好，下一步接入 Agent 工作流。',
+        scoreLabels: ['最近更新情况', '资料是否清楚', '上手难不难', '实际用途', '适合作品展示'], actions: { '二次改造': '适合二次改造', '直接使用': '可以直接使用', '借鉴 UI': '适合借鉴界面', '暂不研究': '暂时不用研究' }
+      },
+      en: {
+        searchButton: 'Search radar', themeLight: 'Light', themeDark: 'Dark', export: 'Export local data', account: 'Sign in later',
+        workspace: 'Workspace', discover: 'Discover', saved: 'Saved projects', compare: 'Compare', notes: 'Research notes', demo: 'Demo mode', reset: 'Reset local data',
+        guest: 'Guest workspace', guestNote: 'Stored locally in browser', eyebrow: 'AI-assisted project discovery', heroTitleFirst: 'Find what to', heroTitleSecond: 'build next.', heroCopy: 'Search the open-source universe, understand the signal behind the stars, and turn a good repository into your next buildable idea.', quickChips: ['AI agent tools', 'Local-first apps', 'Developer productivity', 'Data visualization'], searchPlaceholder: 'Try: AI agent dashboard, CRM, productivity...',
+        agentMode: 'Plain-language project review', agentReady: 'Demo ready', agentName: 'Radar Agent', agentMessage: 'I will explain what this project does, whether it fits you, and what to try first.',
+        steps: ['Understand your search', 'Read project evidence', 'Check fit for you', 'Give a clear next step'], scanned: 'Found this time', savedCount: 'Saved projects', buildable: 'Good to try first', local: 'saved in browser', highSignal: 'reference only', demoLabel: 'Current mode', on: 'Local demo', zeroConfig: 'no login',
+        section: 'Projects worth exploring', subtitle: 'Curated demo results · local data only · no API key required', all: 'All projects', productivity: 'Productivity', dashboard: 'Dashboard', localFirst: 'Local-first', sortSignal: 'Sort: overall reference', sortStars: 'Sort: GitHub stars', sortRecent: 'Sort: recently updated',
+        footer: 'Demo data is intentionally local. Search now can query public GitHub repositories; the Agent API comes later.', refresh: 'More results', liveResults: 'Live GitHub results · public repositories · Agent analysis not connected yet', liveError: 'GitHub is temporarily unavailable, so the local demo results remain visible.', searching: 'Searching GitHub…', recommendation: 'Recommendation', score: 'How does this project look?', scoreHelp: 'A higher score means it is worth looking at sooner; it is not an absolute quality judgment.', next: 'What to do next', chatTitle: 'Ask the Agent', chatPlaceholder: 'For example: Is this a good project for me to build now?', chatSend: 'Send', chatNote: 'Answers stay focused on this repository, its README, and the analysis. No local actions are executed.', repo: 'View repository', save: 'Save to radar', savedLocal: 'Saved locally', remove: 'Removed from local radar', resetDone: 'Local radar reset', accountSoon: 'Account sync will be added after the local-first MVP.', demoOn: 'Demo mode is already active', noSignal: 'No signal found', tryAgain: 'Try another keyword or clear the current filter.', emptySaved: 'Your radar is empty', emptySavedNote: 'Save a project from Discover and it will stay in this browser.', staged: 'Module staged for the next iteration', stagedNote: 'This demo keeps the navigation visible so the product direction is clear.', results: 'Results for', ranked: 'Demo mode · ranked by project signal', savedTitle: 'Saved to your radar', savedSubtitle: 'Local-only collection · available without an account', compareTitle: 'Compare is coming next', notesTitle: 'Research notes are coming next', shellNote: 'The front-end shell is ready for the next Agent workflow.',
+        scoreLabels: ['Recent activity', 'Clarity of materials', 'Ease to start', 'Practical use', 'Portfolio fit'], actions: { '二次改造': 'Good for extending', '直接使用': 'Ready to use', '借鉴 UI': 'Use as a UI reference', '暂不研究': 'Skip for now' }
+      }
+    };
+    const $ = (selector) => document.querySelector(selector);
+    const API_ORIGIN = window.location.protocol === 'file:' ? 'http://127.0.0.1:4173' : '';
+    const apiUrl = (path) => `${API_ORIGIN}${path}`;
+    const chatState = { projectId: null, readme: '', analysis: {}, history: [], sending: false, lastQuestion: '' };
+    const searchState = { page: 1, fresh: false };
+    const runState = { project: null, readme: '', running: false };
+    const grid = $('#projectGrid');
+    const projectText = {
+      zh: {
+        agentflow: { description: '将 AI 任务、工具和人工审批步骤编排成可重复执行的可视化工作流。', reason: '概念一眼就能理解，同时拥有足够的交互空间来做出有辨识度的 AI 产品。', next: '先研究节点编辑器，只复刻一条小流程：搜索 → 评估 → 推荐。' },
+        memospace: { description: '一个安静的本地优先工作区，用于记录笔记、标签和小型研究过程，无需账户。', reason: '本地保存让第一版很容易交付，也能形成清晰的隐私叙事。', next: '先做本地收藏、筛选条件和导入/导出流程。' },
+        signalboard: { description: '把分散的项目数据转化为清晰决策和趋势判断的轻量数据看板。', reason: '它最值得借鉴的是信息层级：把密集数据转化成容易理解的视觉故事。', next: '借鉴卡片层级、图表容器和空状态，为雷达设计数据面板。' },
+        shipyard: { description: '轻量项目启动台，用于管理里程碑、链接、决策和发布记录。', reason: '范围足够小，可以完成；同时又能体现真实的产品思考和状态设计。', next: '把项目列表改造成个人构建队列，加入状态和里程碑。' },
+        'openui-kit': { description: '面向专业内部工具的精致、可访问 UI 基础组件和布局模式集合。', reason: '组件语言具有复用价值，适合用作建立产品视觉识别的参考。', next: '提取间距、字体和空状态模式，不要整套复制页面。' },
+        repoatlas: { description: '通过交互式地图探索项目关系、编程语言和依赖结构。', reason: '视觉表现很有野心，但第一版需要的数据处理超过当前 MVP 的范围。', next: '先作为未来网络图或依赖关系图功能的参考。' }
+      }
+    };
+
+    function getProjectText(project) {
+      const languageText = projectText[state.language] || {};
+      if (languageText[project.id]) return languageText[project.id];
+      if (project.id.startsWith('github-') && state.language === 'zh') {
+        return {
+          description: project.description,
+          reason: '这是 GitHub 返回的真实公开仓库。当前先依据仓库元数据展示基础信号，等待 Agent 返回更深入的中文分析。',
+          next: '先查看仓库 README、在线 Demo 和安装方式，再判断是直接使用、二次改造还是暂不研究。'
+        };
+      }
+      return { description: project.description, reason: project.reason, next: project.next };
+    }
+
+    function icon(name) {
+      const icons = {
+        external: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 5h5v5M19 5l-8 8"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>',
+        spark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3Z"/><path d="m19 16 .7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16Z"/></svg>',
+        bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4.5A2.5 2.5 0 0 1 8.5 2h7A2.5 2.5 0 0 1 18 4.5V21l-5-3-5 3V4.5Z"/></svg>'
+      }; return icons[name] || '';
+    }
+
+    function cleanRepositoryDescription(description) {
+      const raw = String(description || '').replace(/\s+/g, ' ').trim();
+      const suspicious = raw.length > 280 || /(.)\1{7,}/.test(raw) || /[\uFFFD]/.test(raw);
+      if (!raw) return { text: state.language === 'zh' ? '该仓库没有提供简介。' : 'No description provided by this repository.', suspicious: false };
+      if (suspicious) return { text: state.language === 'zh' ? '项目简介内容较长或格式异常，请打开项目详情查看。' : 'The repository description is long or unusually formatted. Open the details to inspect it.', suspicious: true };
+      return { text: raw.slice(0, 220), suspicious: false };
+    }
+
+    function getCardPlainSummary(project) {
+      if (!project.id.startsWith('github-')) return projectText.zh[project.id]?.description || '这是一个开源项目，具体用途请查看项目分析。';
+      const topics = (project.topics || []).map((topic) => topic.toLowerCase());
+      const meanings = [];
+      const topicMap = [['ai', '人工智能功能'], ['agent', 'AI Agent 工作流'], ['dashboard', '数据看板'], ['web', '网页应用'], ['frontend', '前端界面'], ['backend', '后端服务'], ['database', '数据存储'], ['automation', '自动化流程'], ['security', '安全检测'], ['ui', '界面组件'], ['design-system', '设计系统'], ['cli', '命令行工具'], ['productivity', '效率工具'], ['python', 'Python 开发']];
+      topicMap.forEach(([key, label]) => { if (meanings.length < 2 && topics.some((topic) => topic.includes(key))) meanings.push(label); });
+      const focus = meanings.length ? meanings.join('和') : '一个具体的开发问题';
+      return `这是一个使用 ${project.language || '多种技术'} 开发的开源项目，主要用于${focus}。具体功能以项目分析和 README 为准。`;
+    }
+
+    function mapGitHubRepository(repo) {
+      const topics = Array.isArray(repo.topics) ? repo.topics : [];
+      const tags = topics.slice(0, 3).map((topic) => topic.replace(/[-_]/g, ' '));
+      if (!tags.length && repo.language) tags.push(repo.language);
+      const description = cleanRepositoryDescription(repo.description);
+      return {
+        id: `github-${repo.id}`, name: repo.name, owner: repo.owner?.login || 'github',
+        icon: (repo.name || 'GH').slice(0, 2).toUpperCase(),
+        description: repo.description || 'No description provided by this repository.', cardDescription: description.text, descriptionSuspicious: description.suspicious, tags,
+        language: repo.language || 'Unknown', stars: repo.stargazers_count || 0, forks: repo.forks_count || 0,
+        license: repo.license?.spdx_id || repo.license?.name || 'No license', topics, readme: null,
+        updated: repo.updated_at ? new Date(repo.updated_at).toLocaleDateString(state.language === 'zh' ? 'zh-CN' : 'en-US') : 'Unknown',
+        signal: Math.min(99, Math.max(50, Math.round((Math.log10((repo.stargazers_count || 1) + 1) * 18) + (repo.archived ? 0 : 18)))),
+        action: '二次改造', repo: repo.html_url, scores: { activity: repo.archived ? 35 : 78, docs: repo.has_wiki ? 78 : 62, effort: 68, utility: 76, portfolio: 82 },
+        reason: 'Live repository metadata is available. The Agent evaluation layer will add a deeper recommendation in a later version.',
+        next: 'Open the repository, inspect its README and demo, then decide whether to use or extend it.'
+      };
+    }
+
+    async function requestJsonWithFallback(proxyUrl, directUrl) {
+      try {
+        const proxyResponse = await fetch(proxyUrl);
+        if (proxyResponse.ok) return proxyResponse.json();
+      } catch (error) {
+        // Direct file:// usage has no local proxy; continue to GitHub fallback.
+      }
+      const directResponse = await fetch(directUrl, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!directResponse.ok) throw new Error(`GitHub request failed: ${directResponse.status}`);
+      return directResponse.json();
+    }
+
+    function fuzzyTokens(value) {
+      return value.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z0-9\u4e00-\u9fff]+/).filter(Boolean);
+    }
+
+    function fuzzyMatch(query, value) {
+      const queryTokens = fuzzyTokens(query); const valueText = value.toLowerCase();
+      return queryTokens.every((token) => valueText.includes(token) || valueText.split(/[^a-z0-9\u4e00-\u9fff]+/).some((part) => part.startsWith(token.slice(0, Math.max(2, token.length - 1)))));
+    }
+
+    async function searchGitHub(query, options = {}) {
+      const page = options.page || 1; const fresh = options.fresh ? '&fresh=1' : '';
+      const queryPart = `q=${encodeURIComponent(query)}&sort=stars&order=desc&per_page=12&page=${page}${fresh}`;
+      const payload = await requestJsonWithFallback(apiUrl(`/api/github/search?${queryPart}`), `https://api.github.com/search/repositories?${queryPart}`);
+      return Array.isArray(payload.items) ? payload.items.map(mapGitHubRepository) : [];
+    }
+
+    function setRunStatus(type, percent, title, detail) {
+      const panel = $('#runStatus'); panel.className = `run-status is-${type}`; $('#runStatusPercent').textContent = `${percent}%`; $('#runStatusBar').style.width = `${percent}%`; $('#runStatusTitle').textContent = title; $('#runStatusDetail').textContent = detail;
+    }
+
+    async function loadReadme(project) {
+      const status = $('#readmeStatus'); const code = $('#readmeCode');
+      setRunStatus('running', 28, state.language === 'zh' ? '正在读取项目资料' : 'Reading project materials', state.language === 'zh' ? '正在读取 GitHub README，准备交给 Agent 整理。' : 'Loading the GitHub README before sending it to the Agent.');
+      if (!project.repo.startsWith('https://github.com/')) { status.textContent = state.language === 'zh' ? '演示项目没有在线 README。' : 'Demo projects do not have an online README.'; code.hidden = true; return ''; }
+      const parts = new URL(project.repo).pathname.split('/').filter(Boolean);
+      if (parts.length < 2) return '';
+      status.textContent = state.language === 'zh' ? '正在加载 GitHub README 原文…' : 'Loading the original GitHub README…'; code.hidden = true;
+      try {
+        const proxyUrl = apiUrl(`/api/github/readme?owner=${encodeURIComponent(parts[0])}&repo=${encodeURIComponent(parts[1])}`);
+        const directUrl = `https://api.github.com/repos/${parts[0]}/${parts[1]}/readme`;
+        let text;
+        try {
+          const proxyResponse = await fetch(proxyUrl);
+          if (proxyResponse.ok) text = await proxyResponse.text();
+        } catch (error) {
+          // Direct file:// usage has no local proxy; continue to GitHub fallback.
+        }
+        if (!text) {
+          const directResponse = await fetch(directUrl, { headers: { Accept: 'application/vnd.github.raw+json' } });
+          if (!directResponse.ok) throw new Error(`README request failed: ${directResponse.status}`);
+          text = await directResponse.text();
+        }
+        project.readme = text;
+        chatState.readme = text;
+        code.textContent = text.slice(0, 9000);
+        code.hidden = true;
+        status.hidden = true;
+        status.textContent = state.language === 'zh' ? 'README 原文仅用于核对来源，不作为主要分析内容。' : 'The README is only a source reference, not the main analysis.';
+        setRunStatus('running', 48, state.language === 'zh' ? '资料读取完成' : 'Materials loaded', state.language === 'zh' ? 'README 已读取，正在整理重点并准备生成白话总结。' : 'README loaded. Preparing the plain-language summary.');
+        return text;
+      } catch (error) {
+        setRunStatus('error', 28, state.language === 'zh' ? '资料读取失败' : 'Could not load materials', state.language === 'zh' ? 'README 暂时无法加载，请打开仓库查看。' : 'README could not be loaded. Open the repository to view it.');
+        status.textContent = state.language === 'zh' ? 'README 暂时无法加载，请打开仓库查看。' : 'README could not be loaded. Open the repository to view it.';
+        code.hidden = true;
+        return '';
+      }
+    }
+
+    async function loadAgentAnalysis(project, readme) {
+      if (!state.liveMode) return;
+      const status = $('#readmeStatus');
+      setRunStatus('running', 62, state.language === 'zh' ? 'Agent 正在分析' : 'Agent is analyzing', state.language === 'zh' ? '正在把项目资料整理成简单易懂的总结。' : 'Turning the project materials into a plain-language summary.');
+      try {
+        status.textContent = state.language === 'zh' ? '正在请求受约束的 Agent 分析…' : 'Requesting constrained Agent analysis…';
+        const response = await fetch(apiUrl('/api/agent/analyze'), {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ language: state.language, repository: { name: project.name, owner: project.owner, description: project.description, language: project.language, stars: project.stars, forks: project.forks, license: project.license, topics: project.topics, updated: project.updated, url: project.repo }, readme: readme.slice(0, 12000) })
+        });
+        const result = await response.json();
+        if (!response.ok) { const error = new Error(result.error || 'Agent unavailable'); error.code = result.code; throw error; }
+        chatState.analysis = result;
+        if (result.recommendation) $('#drawerRecommendation').textContent = result.recommendation;
+        if (result.summary) { $('#drawerReason').textContent = result.summary; $('#drawerSummary').textContent = result.summary; }
+        $('#drawerFit').textContent = result.fit_for || (state.language === 'zh' ? '当前资料不足以确认，建议先查看项目文档和 Demo。' : 'The supplied evidence is not enough to confirm this yet. Check the docs and demo first.');
+        $('#drawerPros').textContent = result.pros || (state.language === 'zh' ? '当前资料不足以确认。' : 'The supplied evidence is not enough to confirm this yet.');
+        $('#drawerWatch').textContent = result.watch_out || (state.language === 'zh' ? '当前资料不足以确认，建议先做小范围验证。' : 'The supplied evidence is not enough to confirm this yet. Validate with a small test first.');
+        if (Array.isArray(result.next_steps) && result.next_steps.length) $('#drawerNextAction').textContent = result.next_steps.join(' ');
+        if (result.evidence) $('#agentEvidence').innerHTML = `<strong>${state.language === 'zh' ? '分析依据' : 'Evidence'} · ${state.language === 'zh' ? '置信度' : 'Confidence'} ${result.confidence ?? 0}</strong><ul>${result.evidence.map((item) => `<li>${item}</li>`).join('')}</ul>`;
+        if (result.scores) {
+          const t = copy[state.language];
+          const values = [result.scores.activity, result.scores.documentation, result.scores.build_feasibility, result.scores.utility, result.scores.portfolio];
+          $('#scoreList').innerHTML = t.scoreLabels.map((label, index) => `<div class="score-row"><span>${label}</span><div class="score-bar"><span style="width:${values[index]}%"></span></div><strong>${values[index]}</strong></div>`).join('');
+        }
+        setRunStatus('done', 100, state.language === 'zh' ? '分析完成' : 'Analysis complete', state.language === 'zh' ? 'Agent 已完成总结，你可以查看建议或继续追问。' : 'The Agent finished its summary. Review the advice or ask a follow-up question.');
+        status.textContent = state.language === 'zh' ? 'Agent 分析已完成；README 原文仅作为可选核对资料。' : 'Agent analysis complete; the original README is available only as an optional reference.';
+      } catch (error) {
+        const fallbackMessage = error.code === 'AUTH_FAILED' ? 'DeepSeek API Key 无效或已失效，请重新生成密钥。' : error.code === 'QUOTA_OR_LIMIT' ? 'DeepSeek 余额、额度或请求频率受限，请检查账户状态。' : error.code === 'REQUEST_INVALID' ? 'DeepSeek 模型或请求参数不兼容，请检查模型配置。' : error.code === 'TRUNCATED_PROVIDER_RESPONSE' ? 'DeepSeek 输出过长未完成，已保留规则评分，请重试。' : error.code === 'INVALID_AGENT_JSON' ? 'DeepSeek 返回格式不规范，已保留规则评分，请重试。' : error.message || 'Agent 请求失败，当前保留规则评分。';
+        setRunStatus('error', 62, state.language === 'zh' ? '分析没有完成' : 'Analysis did not finish', `${fallbackMessage} ${state.language === 'zh' ? '你可以点击“重新分析”再试一次。' : 'Click “Retry analysis” to try again.'}`);
+        status.textContent = state.language === 'zh' ? `${fallbackMessage} 当前保留规则评分。` : `${fallbackMessage} Rule-based scores remain active.`;
+      }
+    }
+
+    function filteredProjects() {
+      let items = activeProjects.filter((project) => {
+        const haystack = `${project.name} ${project.owner} ${project.description} ${project.tags.join(' ')} ${project.language}`;
+        const matchQuery = !state.query || fuzzyMatch(state.query, haystack);
+        const matchFilter = state.filter === 'all' || project.tags.includes(state.filter);
+        const matchSaved = !state.savedOnly || state.saved.includes(project.id);
+        return matchQuery && matchFilter && matchSaved;
+      });
+      if (state.sort === 'stars') items.sort((a, b) => b.stars - a.stars);
+      if (state.sort === 'recent') items.sort((a, b) => a.updated.localeCompare(b.updated));
+      if (state.sort === 'signal') items.sort((a, b) => b.signal - a.signal);
+      return items;
+    }
+
+    function render() {
+      const items = filteredProjects();
+      grid.className = state.view === 'list' ? 'project-grid list-view' : 'project-grid';
+      const t = copy[state.language];
+      grid.innerHTML = items.length ? items.map((project, index) => {
+        const isSaved = state.saved.includes(project.id);
+        const localized = getProjectText(project);
+        return `<article class="project-card" style="animation-delay:${index * 45}ms">
+          <div class="project-top"><div class="project-icon">${project.icon}</div><button class="bookmark ${isSaved ? 'active' : ''}" data-save="${project.id}" aria-label="${isSaved ? t.remove : t.save}">${icon('bookmark')}</button></div>
+          <h3 class="project-name">${project.name}</h3><div class="project-owner project-owner-main">${project.owner} / ${state.language === 'zh' ? '公开仓库' : 'public repository'}</div>
+          <p class="project-desc ${project.descriptionSuspicious ? 'is-suspicious' : ''}">${project.cardDescription || localized.description}</p>
+          <p class="project-zh-summary"><strong>${state.language === 'zh' ? '中文说明：' : 'Plain summary: '}</strong>${state.language === 'zh' ? getCardPlainSummary(project) : (project.cardDescription || localized.description)}</p>
+          <div class="tag-row"><span class="tag accent">${project.language}</span>${project.tags.map((tag) => `<span class="tag ${tag === 'AI' ? 'lime' : ''}">${tag}</span>`).join('')}</div>
+          <div class="project-meta"><div class="meta-item"><small>${state.language === 'zh' ? '信号' : 'Signal'}</small><strong style="color:var(--lime)">${project.signal}</strong></div><div class="meta-item"><small>Star</small><strong>★ ${formatNumber(project.stars)}</strong></div><div class="meta-item"><small>${state.language === 'zh' ? 'Fork' : 'Forks'}</small><strong>${formatNumber(project.forks || 0)}</strong></div></div>
+          <div class="project-owner project-owner-facts">${state.language === 'zh' ? '更新' : 'Updated'} ${project.updated} · ${project.license || (state.language === 'zh' ? '许可证待确认' : 'License unconfirmed')}</div>
+          <div class="card-actions"><a href="${project.repo}" target="_blank" rel="noreferrer">${t.repo} ${icon('external')}</a><button class="analyze-btn" data-analyze="${project.id}">${icon('spark')} ${state.language === 'zh' ? '分析项目' : 'Analyze'}</button></div>
+        </article>`;
+      }).join('') : `<div class="empty"><strong>${t.noSignal}</strong>${t.tryAgain}</div>`;
+      $('#scannedCount').textContent = String(items.length).padStart(2, '0');
+      $('#savedCount').textContent = String(state.saved.length).padStart(2, '0');
+      grid.querySelectorAll('[data-save]').forEach((button) => button.addEventListener('click', () => toggleSaved(button.dataset.save)));
+      grid.querySelectorAll('[data-analyze]').forEach((button) => button.addEventListener('click', () => openAnalysis(button.dataset.analyze)));
+    }
+
+    function formatNumber(value) { return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value; }
+    function toggleSaved(id) {
+      state.saved = state.saved.includes(id) ? state.saved.filter((item) => item !== id) : [...state.saved, id];
+      localStorage.setItem('os-radar-saved', JSON.stringify(state.saved));
+      render(); showToast(state.saved.includes(id) ? copy[state.language].savedLocal : copy[state.language].remove);
+    }
+    function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2200); }
+
+    function renderChat() {
+      $('#chatMessages').innerHTML = chatState.history.map((item) => `<div class="chat-message ${item.role === 'user' ? 'user' : 'agent'}">${item.content.replace(/[&<>]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[char]))}</div>`).join('');
+      $('#chatMessages').scrollTop = $('#chatMessages').scrollHeight;
+    }
+
+    function openAnalysis(id) {
+      const project = activeProjects.find((item) => item.id === id); if (!project) return; state.activeProject = project;
+      chatState.projectId = project.id; chatState.readme = ''; chatState.analysis = {}; chatState.history = []; chatState.lastQuestion = '';
+      $('#chatStatus').className = 'chat-status'; $('#chatStatusText').textContent = state.language === 'zh' ? '等待你的问题' : 'Waiting for your question'; $('#chatRetry').style.display = 'none';
+      runState.project = project; runState.readme = ''; runState.running = true;
+      setRunStatus('running', 8, state.language === 'zh' ? '正在准备分析' : 'Preparing analysis', state.language === 'zh' ? '正在连接 GitHub，准备读取这个项目的资料。' : 'Connecting to GitHub and preparing the repository materials.');
+      renderChat();
+      const t = copy[state.language];
+      const localized = getProjectText(project);
+      $('#drawerTitle').textContent = project.name; $('#drawerOwner').textContent = `${project.owner} · ${project.language} · ${state.language === 'zh' ? '信号' : 'signal'} ${project.signal}`;
+      $('#drawerRecommendation').textContent = t.actions[project.action]; $('#drawerReason').textContent = localized.reason; $('#drawerNextAction').textContent = localized.next; $('#drawerRepo').href = project.repo;
+      $('#drawerSave').textContent = state.saved.includes(id) ? t.savedLocal : t.save;
+      $('#scoreList').innerHTML = [[t.scoreLabels[0], project.scores.activity], [t.scoreLabels[1], project.scores.docs], [t.scoreLabels[2], project.scores.effort], [t.scoreLabels[3], project.scores.utility], [t.scoreLabels[4], project.scores.portfolio]].map(([label, value]) => `<div class="score-row"><span>${label}</span><div class="score-bar"><span style="width:${value}%"></span></div><strong>${value}</strong></div>`).join('');
+      $('#repoFacts').innerHTML = `<span class="repo-fact">${state.language === 'zh' ? 'Fork' : 'Forks'} ${formatNumber(project.forks || 0)}</span><span class="repo-fact">${state.language === 'zh' ? '许可证' : 'License'} ${project.license || (state.language === 'zh' ? '待确认' : 'unconfirmed')}</span>${(project.tags || []).map((tag) => `<span class="repo-fact">#${tag}</span>`).join('')}`;
+      $('#agentEvidence').innerHTML = '';
+      $('#drawerSummary').textContent = state.language === 'zh' ? '正在阅读项目资料并整理成白话总结…' : 'Reading the project materials and preparing a plain-language summary…'; $('#drawerFit').textContent = state.language === 'zh' ? '等待 Agent 判断适合谁。' : 'Waiting for the Agent to assess who this fits.'; $('#drawerPros').textContent = state.language === 'zh' ? '等待 Agent 提炼主要优点。' : 'Waiting for the Agent to identify the main benefit.'; $('#drawerWatch').textContent = state.language === 'zh' ? '等待 Agent 提醒注意事项。' : 'Waiting for the Agent to identify what to watch for.';
+      $('#readmeToggle').textContent = state.language === 'zh' ? '查看 README 原文' : 'View original README'; $('#readmeCode').hidden = true; $('#readmeStatus').hidden = true;
+      $('#analysisDrawer').classList.add('open'); $('#drawerBackdrop').classList.add('open');
+      if (state.liveMode) loadReadme(project).then((readme) => { runState.readme = readme; return loadAgentAnalysis(project, readme); }).finally(() => { runState.running = false; });
+      else { setRunStatus('done', 100, state.language === 'zh' ? '演示分析完成' : 'Demo analysis complete', state.language === 'zh' ? '这是本地演示项目，当前使用内置资料和规则评分。' : 'This is a local demo project using built-in materials and rule-based scores.'); runState.running = false; }
+    }
+    async function retryAnalysis() {
+      if (!runState.project || runState.running) return;
+      runState.running = true; chatState.readme = ''; chatState.analysis = {};
+      setRunStatus('running', 8, state.language === 'zh' ? '重新准备分析' : 'Preparing analysis again', state.language === 'zh' ? '正在重新读取项目资料。' : 'Reading the project materials again.');
+      const readme = await loadReadme(runState.project); runState.readme = readme; await loadAgentAnalysis(runState.project, readme); runState.running = false;
+    }
+    async function sendChatMessage(event) {
+      event.preventDefault();
+      if (chatState.sending || !state.activeProject) return;
+      const input = $('#chatInput'); const message = input.value.trim(); if (!message) return;
+      chatState.sending = true; chatState.lastQuestion = message; input.value = ''; $('#chatSend').disabled = true; $('#chatRetry').style.display = 'none'; $('#chatStatus').className = 'chat-status is-running'; $('#chatStatusText').textContent = state.language === 'zh' ? '正在检查本地服务…' : 'Checking the local service…';
+      chatState.history.push({ role: 'user', content: message }); renderChat();
+      const project = state.activeProject;
+      try {
+        const healthResponse = await fetch(apiUrl('/api/health'), { cache: 'no-store' });
+        if (!healthResponse.ok) throw new Error(state.language === 'zh' ? '本地服务返回异常。' : 'The local service returned an error.');
+        $('#chatStatusText').textContent = state.language === 'zh' ? 'Agent 正在阅读当前项目资料…' : 'The Agent is reading this project…';
+        const response = await fetch(apiUrl('/api/agent/chat'), {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ language: state.language, context: { repository: { name: project.name, owner: project.owner, description: project.description, language: project.language, stars: project.stars, forks: project.forks, license: project.license, topics: project.topics, updated: project.updated, url: project.repo }, readme: chatState.readme, analysis: chatState.analysis }, history: chatState.history })
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Chat request failed.');
+        chatState.history.push({ role: 'assistant', content: result.reply });
+        $('#chatStatus').className = 'chat-status is-done'; $('#chatStatusText').textContent = state.language === 'zh' ? '回答完成，可以继续追问' : 'Answer complete. You can ask another question.';
+      } catch (error) {
+        const isFetchError = error instanceof TypeError && /fetch/i.test(error.message);
+        const message = isFetchError ? (state.language === 'zh' ? '本地服务没有连接。请确认 PowerShell 中的 node server.js 仍在运行。' : 'The local service is not connected. Make sure node server.js is still running.') : error.code === 'TRUNCATED_CHAT_RESPONSE' ? (state.language === 'zh' ? '回答太长，中途被截断。请重新发送，或把问题问得更具体。' : 'The answer was too long and got cut off. Send again or make the question more specific.') : error.message;
+        chatState.history.push({ role: 'assistant', content: state.language === 'zh' ? `暂时无法完整回答：${message}` : `I could not complete the answer: ${message}` });
+        $('#chatStatus').className = 'chat-status is-error'; $('#chatStatusText').textContent = isFetchError ? (state.language === 'zh' ? '本地服务未连接' : 'Local service is not connected') : (state.language === 'zh' ? '回答没有完整返回，可以重新发送' : 'The answer did not finish. Send again to retry.'); $('#chatRetry').style.display = 'inline-flex';
+      } finally {
+        chatState.sending = false; $('#chatSend').disabled = false; renderChat();
+      }
+    }
+
+    function closeAnalysis() { $('#analysisDrawer').classList.remove('open'); $('#drawerBackdrop').classList.remove('open'); }
+
+    async function runSearch(options = {}) {
+      const t = copy[state.language];
+      const nextQuery = $('#searchInput').value.trim();
+      const sameQuery = nextQuery && nextQuery === state.query;
+      state.query = nextQuery;
+      if (!state.query) { activeProjects = projects; state.liveMode = false; searchState.page = 1; $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; $('#agentMessage').textContent = t.agentMessage; render(); return; }
+      if (sameQuery || options.more) searchState.page = Math.min(searchState.page + 1, 10); else searchState.page = 1;
+      $('#sectionTitle').textContent = `${t.results} “${state.query}”`;
+      $('#sectionSubtitle').textContent = t.searching;
+      $('#agentMessage').textContent = t.searching;
+      $('#searchBtn').disabled = true; $('#refreshResults').disabled = true; $('#refreshResults').classList.add('loading');
+      try {
+        const liveProjects = await searchGitHub(state.query, { page: searchState.page, fresh: Boolean(options.more || sameQuery) });
+        activeProjects = liveProjects;
+        state.liveMode = true;
+        $('#sectionSubtitle').textContent = state.language === 'zh' ? `${t.liveResults} · 第 ${searchState.page} 页` : `${t.liveResults} · page ${searchState.page}`;
+        $('#agentMessage').textContent = state.language === 'zh' ? `找到 ${liveProjects.length} 个公开仓库。你可以点击“换一批”继续查看。` : `${liveProjects.length} public repositories found. Use “More results” to see another page.`;
+      } catch (error) {
+        activeProjects = projects;
+        state.liveMode = false;
+        $('#sectionSubtitle').textContent = t.liveError;
+        $('#agentMessage').textContent = t.liveError;
+        showToast(t.liveError);
+      } finally {
+        $('#searchBtn').disabled = false; $('#refreshResults').disabled = false; $('#refreshResults').classList.remove('loading');
+        render();
+      }
+    }
+
+    function applyLanguage() {
+      const t = copy[state.language];
+      document.documentElement.lang = state.language === 'zh' ? 'zh-CN' : 'en';
+      $('#languageToggle').textContent = state.language === 'zh' ? 'EN' : '中';
+      $('#themeLabel').textContent = state.theme === 'dark' ? t.themeLight : t.themeDark;
+      $('#exportLabel').textContent = t.export; $('#accountLabel').textContent = t.account;
+      $('#crumbWorkspace').textContent = t.workspace; $('#crumbPage').textContent = t.discover;
+      $('#guestLabel').textContent = t.guest; $('#guestNote').textContent = t.guestNote;
+      $('#heroEyebrow').textContent = t.eyebrow; $('#heroTitle').innerHTML = `${t.heroTitleFirst}<br><span style="color:var(--lime)">${t.heroTitleSecond}</span>`; $('#heroCopy').textContent = t.heroCopy; $('#searchLabel').textContent = t.searchButton; $('#searchInput').placeholder = t.searchPlaceholder;
+      document.querySelectorAll('.quick-chip').forEach((chip, index) => { chip.textContent = t.quickChips[index]; });
+      $('#agentName').textContent = t.agentName; $('#agentMode').textContent = t.agentMode; $('#agentStatus').textContent = t.agentReady; $('#agentMessage').textContent = t.agentMessage; $('#drawerEyebrow').textContent = state.language === 'zh' ? 'Agent 分析' : 'Agent analysis'; $('#drawerTitle').textContent = state.language === 'zh' ? '项目分析' : 'Project analysis'; $('#drawerOwner').textContent = state.language === 'zh' ? '项目综合信号报告' : 'Repository signal report'; $('#drawerRecommendation').textContent = state.language === 'zh' ? '构建一个聚焦的原型' : 'Build a focused prototype'; $('#drawerReason').textContent = state.language === 'zh' ? '清晰的功能边界和良好的视觉呈现，让它适合作为下一个项目。' : 'A clear feature boundary and strong visual surface make this a good next project.';
+      $('#stepOne').textContent = t.steps[0]; $('#stepTwo').textContent = t.steps[1]; $('#stepThree').textContent = t.steps[2]; $('#stepFour').textContent = t.steps[3];
+      $('#statScanned').textContent = t.scanned; $('#statSaved').textContent = t.savedCount; $('#statBuildable').textContent = t.buildable; $('#statLocal').textContent = t.local; $('#statSignal').textContent = t.highSignal; $('#statDemo').textContent = t.demoLabel; $('#statOn').textContent = t.on; $('#statConfig').textContent = t.zeroConfig;
+      $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; $('#footerNote').textContent = t.footer; $('#refreshLabel').textContent = t.refresh;
+      $('#recommendationTitle').textContent = t.recommendation; $('#scoreTitle').textContent = t.score; $('#scoreHelp').textContent = t.scoreHelp; $('#nextTitle').textContent = t.next; $('#chatTitle').textContent = t.chatTitle; $('#chatInput').placeholder = t.chatPlaceholder; $('#chatSend').textContent = t.chatSend; $('#chatNote').textContent = t.chatNote; $('#drawerRepo').textContent = t.repo; $('#drawerSave').textContent = t.save;
+      document.querySelector('[data-filter="all"]').textContent = t.all; document.querySelector('[data-filter="Productivity"]').textContent = t.productivity; document.querySelector('[data-filter="Dashboard"]').textContent = t.dashboard; document.querySelector('[data-filter="Local-first"]').textContent = t.localFirst;
+      const options = $('#sortSelect').options; options[0].textContent = t.sortSignal; options[1].textContent = t.sortStars; options[2].textContent = t.sortRecent;
+      localStorage.setItem('os-radar-language', state.language); render();
+    }
+
+    function applyTheme() {
+      document.body.classList.toggle('light', state.theme === 'light');
+      localStorage.setItem('os-radar-theme', state.theme);
+      $('#themeLabel').textContent = state.theme === 'dark' ? copy[state.language].themeLight : copy[state.language].themeDark;
+    }
+
+    function updateNavigationLabel() {
+      const t = copy[state.language];
+      const labels = { discover: t.discover, saved: t.saved, compare: t.compare, notes: t.notes };
+      document.querySelectorAll('[data-nav]').forEach((button) => { const label = button.querySelector('span'); if (label) label.textContent = labels[button.dataset.nav]; });
+      document.querySelector('.nav-label').textContent = t.workspace;
+      document.querySelectorAll('.nav-label')[1].textContent = state.language === 'zh' ? '系统' : 'System';
+      $('#demoModeBtn').querySelector('span').innerHTML = `${t.demo} <b style="font-size:9px;color:var(--lime);font-weight:600">${t.on}</b>`;
+      $('#resetBtn').querySelector('span').textContent = t.reset;
+    }
+
+    $('#readmeToggle').addEventListener('click', () => { const code = $('#readmeCode'); const hidden = code.hidden; code.hidden = !hidden; $('#readmeToggle').textContent = hidden ? (state.language === 'zh' ? '收起 README 原文' : 'Hide original README') : (state.language === 'zh' ? '查看 README 原文' : 'View original README'); });
+    $('#runStatusRetry').addEventListener('click', retryAnalysis);
+    $('#chatRetry').addEventListener('click', () => { if (chatState.lastQuestion && !chatState.sending) { const last = chatState.history[chatState.history.length - 1]; if (last?.role === 'assistant' && last.content.startsWith('暂时无法完整回答：')) chatState.history.pop(); $('#chatInput').value = chatState.lastQuestion; $('#chatForm').requestSubmit(); } });
+    $('#themeToggle').addEventListener('click', () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; applyTheme(); showToast(state.theme === 'light' ? (state.language === 'zh' ? '已切换到浅色主题' : 'Switched to light theme') : (state.language === 'zh' ? '已切换到深色主题' : 'Switched to dark theme')); });
+    $('#languageToggle').addEventListener('click', () => { state.language = state.language === 'zh' ? 'en' : 'zh'; applyLanguage(); updateNavigationLabel(); showToast(state.language === 'zh' ? '已切换为中文' : 'Switched to English'); });
+    $('#searchBtn').addEventListener('click', () => runSearch());
+    $('#refreshResults').addEventListener('click', () => runSearch({ more: true }));
+    $('#searchInput').addEventListener('keydown', (event) => { if (event.key === 'Enter') runSearch(); });
+    document.querySelectorAll('.quick-chip').forEach((chip) => chip.addEventListener('click', () => { $('#searchInput').value = chip.dataset.query; runSearch(); }));
+    document.querySelectorAll('.filter-btn').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach((item) => item.classList.remove('active')); button.classList.add('active'); state.filter = button.dataset.filter; render(); }));
+    $('#sortSelect').addEventListener('change', (event) => { state.sort = event.target.value; render(); });
+    document.querySelectorAll('[data-view]').forEach((button) => button.addEventListener('click', () => { document.querySelectorAll('[data-view]').forEach((item) => item.classList.remove('active')); button.classList.add('active'); state.view = button.dataset.view; render(); }));
+    document.querySelectorAll('[data-nav]').forEach((button) => button.addEventListener('click', () => {
+      document.querySelectorAll('[data-nav]').forEach((item) => item.classList.remove('active')); button.classList.add('active');
+      const t = copy[state.language];
+      if (button.dataset.nav === 'saved') { state.savedOnly = true; state.filter = 'all'; state.query = ''; $('#sectionTitle').textContent = t.savedTitle; $('#sectionSubtitle').textContent = t.savedSubtitle; render(); } else if (button.dataset.nav === 'discover') { state.savedOnly = false; $('#sectionTitle').textContent = t.section; $('#sectionSubtitle').textContent = t.subtitle; render(); } else { state.savedOnly = false; $('#sectionTitle').textContent = button.dataset.nav === 'compare' ? t.compareTitle : t.notesTitle; $('#sectionSubtitle').textContent = t.shellNote; grid.innerHTML = `<div class="empty"><strong>${t.staged}</strong>${t.stagedNote}</div>`; }
+    }));
+    $('#closeDrawer').addEventListener('click', closeAnalysis); $('#drawerBackdrop').addEventListener('click', closeAnalysis); $('#chatForm').addEventListener('submit', sendChatMessage);
+    $('#drawerSave').addEventListener('click', () => { if (state.activeProject) { toggleSaved(state.activeProject.id); $('#drawerSave').textContent = state.saved.includes(state.activeProject.id) ? copy[state.language].savedLocal : copy[state.language].save; } });
+    $('#exportBtn').addEventListener('click', () => { const payload = { saved: state.saved, exportedAt: new Date().toISOString(), mode: 'demo' }; const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'open-source-radar-data.json'; link.click(); URL.revokeObjectURL(url); showToast(state.language === 'zh' ? '本地数据已导出' : 'Local data exported'); });
+    $('#resetBtn').addEventListener('click', () => { localStorage.removeItem('os-radar-saved'); state.saved = []; render(); showToast(copy[state.language].resetDone); });
+    $('#demoModeBtn').addEventListener('click', () => showToast(copy[state.language].demoOn));
+    $('#accountBtn').addEventListener('click', () => showToast(copy[state.language].accountSoon));
+    applyLanguage(); applyTheme(); updateNavigationLabel();
+  </script>
+</body>
+</html>

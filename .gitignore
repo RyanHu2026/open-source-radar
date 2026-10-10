@@ -1,0 +1,10 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Runtime logs
+*.log
+
+# Local exports
+open-source-radar-data.json
