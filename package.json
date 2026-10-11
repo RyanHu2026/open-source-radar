@@ -1,0 +1,13 @@
+{
+  "name": "open-source-radar",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A radar for discovering, understanding, and saving open-source projects.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

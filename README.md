@@ -53,8 +53,16 @@
 Node.js 18+：
 
 ```bash
+npm start
+```
+
+也可以直接运行：
+
+```bash
 node server.js
 ```
+
+项目已提供 `package.json` 和标准 `start` 脚本，可用于支持 Node.js 应用的部署平台。部署时需要配置 `DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL` 和 `DEEPSEEK_MODEL` 环境变量；真实 API Key 不要写入仓库。
 
 然后在本机打开：`http://127.0.0.1:4173`
 
