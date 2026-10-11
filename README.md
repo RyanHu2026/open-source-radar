@@ -76,6 +76,30 @@ node server.js
 
 服务默认监听 `0.0.0.0`，因此可以接受局域网访问；如只希望本机访问，可在 `.env` 中设置 `HOST=127.0.0.1`。
 
+### 使用 Cloudflare Workers 部署
+
+当前项目包含前端页面和后端 API。线上版本使用 Cloudflare Workers 处理 `/api/*` 请求，并使用 Workers Static Assets 提供 `index.html`；原来的 `server.js` 继续保留，用于本地运行。
+
+1. 打开 [Cloudflare Dashboard](https://dash.cloudflare.com/) 并登录；
+2. 进入 **Workers & Pages**，创建一个 Worker，并连接 GitHub 仓库 `RyanHu2026/open-source-radar`；
+3. 使用仓库中的 `wrangler.toml`、`worker.js` 和 `index.html`；
+4. 在 Worker 的 **Settings → Variables and Secrets** 中添加 Secret：
+   - `DEEPSEEK_API_KEY`：你的新 DeepSeek API Key；
+5. 确认以下非敏感变量已经存在于 `wrangler.toml`：
+   - `DEEPSEEK_BASE_URL`：`https://api.deepseek.com`；
+   - `DEEPSEEK_MODEL`：`deepseek-flash`；
+6. 部署完成后，打开 Cloudflare 分配的 `workers.dev` 地址，并访问 `/api/health` 检查服务状态。
+
+线上 Worker 提供：
+
+- `GET /api/health`：服务健康检查；
+- `GET /api/github/search?q=...`：GitHub 仓库搜索；
+- `GET /api/github/readme?owner=...&repo=...`：README 读取；
+- `POST /api/agent/analyze`：项目分析；
+- `POST /api/agent/chat`：围绕当前项目继续提问。
+
+不要把真实 API Key 写入 `wrangler.toml`、`worker.js`、`index.html` 或 GitHub。Cloudflare 官方说明：[Static Assets](https://developers.cloudflare.com/workers/static-assets/)、[Dashboard 部署](https://developers.cloudflare.com/workers/get-started/dashboard/) 和 [Workers 构建部署](https://developers.cloudflare.com/workers/ci-cd/builds/)。
+
 本地代理提供：
 
 - `GET /api/health`：服务健康检查
