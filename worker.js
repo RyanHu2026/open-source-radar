@@ -191,6 +191,16 @@ async function requestChat(env, input) {
   }
 }
 
+function trendCutoff(range) {
+  const days = range === 'week' ? 7 : 1;
+  const date = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  return date.toISOString().slice(0, 10);
+}
+
+function trendQuery(range) {
+  return `stars:>10 pushed:>=${trendCutoff(range)}`;
+}
+
 async function githubRequest(endpoint, accept) {
   const response = await fetch(endpoint, { headers: { Accept: accept, 'User-Agent': 'open-source-radar-cloudflare-worker' } });
   if (!response.ok) throw Object.assign(new Error(`GitHub request failed: ${response.status}`), { status: response.status });
@@ -239,6 +249,23 @@ async function handleApi(request, env, url) {
     } catch (error) {
       return jsonResponse(error.status === 429 ? 429 : 502, { error: error.message || 'Chat request failed.', code: error.code || 'CHAT_FAILED' });
     }
+  }
+
+  if (url.pathname === '/api/github/trending' && request.method === 'GET') {
+    const range = url.searchParams.get('range') === 'week' ? 'week' : 'day';
+    const language = (url.searchParams.get('language') || '').trim();
+    const page = Math.min(Math.max(Number(url.searchParams.get('page') || 1), 1), 3);
+    const key = `trending:${range}:${language}:${page}`;
+    const cached = getCached(key);
+    if (cached) return jsonResponse(200, { ...cached, cached: true });
+    try {
+      const languagePart = language ? ` language:${language}` : '';
+      const endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(`${trendQuery(range)}${languagePart}`)}&sort=stars&order=desc&per_page=12&page=${page}`;
+      const payload = await (await githubRequest(endpoint, 'application/vnd.github+json')).json();
+      const result = { range, language, total_count: payload.total_count || 0, items: Array.isArray(payload.items) ? payload.items : [] };
+      setCached(key, result, range === 'day' ? SEARCH_TTL : 30 * 60 * 1000);
+      return jsonResponse(200, { ...result, cached: false });
+    } catch (error) { return jsonResponse(error.status === 403 ? 429 : 502, { error: 'GitHub trending data is temporarily unavailable.' }); }
   }
 
   if (url.pathname === '/api/github/search' && request.method === 'GET') {

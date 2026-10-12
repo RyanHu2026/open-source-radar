@@ -336,6 +336,27 @@ async function handleApi(req, res, url) {
     return;
   }
 
+  if (url.pathname === '/api/github/trending') {
+    const range = url.searchParams.get('range') === 'week' ? 'week' : 'day';
+    const language = (url.searchParams.get('language') || '').trim();
+    const page = Math.min(Math.max(Number(url.searchParams.get('page') || 1), 1), 3);
+    const cutoff = new Date(Date.now() - (range === 'week' ? 7 : 1) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const key = `trending:${range}:${language}:${page}`;
+    const cached = getCached(key);
+    if (cached) return sendJson(res, 200, { ...cached, cached: true });
+    try {
+      const languagePart = language ? ` language:${language}` : '';
+      const endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(`stars:>10 pushed:>=${cutoff}${languagePart}`)}&sort=stars&order=desc&per_page=12&page=${page}`;
+      const response = await githubRequest(endpoint, 'application/vnd.github+json');
+      const payload = await response.json();
+      const result = { range, language, total_count: payload.total_count || 0, items: Array.isArray(payload.items) ? payload.items : [] };
+      setCached(key, result, range === 'day' ? SEARCH_TTL : 30 * 60 * 1000);
+      return sendJson(res, 200, { ...result, cached: false });
+    } catch (error) {
+      return sendJson(res, error.status === 403 ? 429 : 502, { error: 'GitHub trending data is temporarily unavailable.' });
+    }
+  }
+
   if (url.pathname === '/api/github/search') {
     const query = (url.searchParams.get('q') || '').trim();
     if (!query) return sendJson(res, 400, { error: 'Missing q query parameter.' });
