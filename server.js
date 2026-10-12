@@ -340,13 +340,16 @@ async function handleApi(req, res, url) {
     const range = url.searchParams.get('range') === 'week' ? 'week' : 'day';
     const language = (url.searchParams.get('language') || '').trim();
     const page = Math.min(Math.max(Number(url.searchParams.get('page') || 1), 1), 3);
-    const cutoff = new Date(Date.now() - (range === 'week' ? 7 : 1) * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-    const key = `trending:${range}:${language}:${page}`;
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const weekStart = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const weekEnd = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const trendQuery = range === 'week' ? `stars:>10 pushed:${weekStart}..${weekEnd}` : `stars:>10 pushed:>=${yesterday}`;
+    const key = `trending-v2:${range}:${language}:${page}`;
     const cached = getCached(key);
     if (cached) return sendJson(res, 200, { ...cached, cached: true });
     try {
       const languagePart = language ? ` language:${language}` : '';
-      const endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(`stars:>10 pushed:>=${cutoff}${languagePart}`)}&sort=stars&order=desc&per_page=12&page=${page}`;
+      const endpoint = `https://api.github.com/search/repositories?q=${encodeURIComponent(`${trendQuery}${languagePart}`)}&sort=stars&order=desc&per_page=12&page=${page}`;
       const response = await githubRequest(endpoint, 'application/vnd.github+json');
       const payload = await response.json();
       const result = { range, language, total_count: payload.total_count || 0, items: Array.isArray(payload.items) ? payload.items : [] };

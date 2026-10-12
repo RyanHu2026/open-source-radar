@@ -191,14 +191,15 @@ async function requestChat(env, input) {
   }
 }
 
-function trendCutoff(range) {
-  const days = range === 'week' ? 7 : 1;
-  const date = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+function trendDateOffset(days) {
+  const date = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
   return date.toISOString().slice(0, 10);
 }
 
 function trendQuery(range) {
-  return `stars:>10 pushed:>=${trendCutoff(range)}`;
+  const yesterday = trendDateOffset(-1);
+  if (range === 'week') return `stars:>10 pushed:${trendDateOffset(-7)}..${trendDateOffset(-2)}`;
+  return `stars:>10 pushed:>=${yesterday}`;
 }
 
 async function githubRequest(endpoint, accept) {
@@ -255,7 +256,7 @@ async function handleApi(request, env, url) {
     const range = url.searchParams.get('range') === 'week' ? 'week' : 'day';
     const language = (url.searchParams.get('language') || '').trim();
     const page = Math.min(Math.max(Number(url.searchParams.get('page') || 1), 1), 3);
-    const key = `trending:${range}:${language}:${page}`;
+    const key = `trending-v2:${range}:${language}:${page}`;
     const cached = getCached(key);
     if (cached) return jsonResponse(200, { ...cached, cached: true });
     try {

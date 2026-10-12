@@ -348,6 +348,8 @@
     .project-desc.is-suspicious { color: var(--muted); font-style: italic; }
     .project-zh-summary { height: 43px; margin-top: 8px; color: var(--cyan); font-size: 12px; line-height: 1.65; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
     .project-zh-summary strong { color: var(--lime); font-weight: 800; }
+    .project-ai-result { min-height: 30px; margin-top: 8px; padding: 7px 9px; border: 1px solid rgba(200,242,105,0.18); border-radius: 8px; color: var(--muted-strong); background: rgba(200,242,105,0.05); font-size: 11px; line-height: 1.5; }
+    .project-ai-result strong { color: var(--lime); }
     .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
     .tag { border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 5px 8px; font-size: 11px; }
     .tag.accent { color: var(--cyan); border-color: rgba(115,217,233,0.26); background: var(--cyan-soft); }
@@ -508,7 +510,7 @@
 
       <section class="stats" aria-label="工作区统计"><div class="stat"><small id="statScanned">已找到项目</small><div class="stat-row"><strong id="scannedCount">00</strong><em id="statGrowth">当前结果</em></div></div><div class="stat"><small id="statSaved">已保存项目</small><div class="stat-row"><strong id="savedCount">00</strong><em id="statLocal">保存在浏览器</em></div></div><div class="stat"><small id="statBuildable">值得优先看</small><div class="stat-row"><strong id="highSignalCount">00</strong><em id="statSignal">参考分 80+</em></div></div><div class="stat"><small id="statService">使用方式</small><div class="stat-row"><strong id="statMode">访客模式</strong><em id="statConfig">无需登录</em></div></div></section>
 
-      <section class="section-head"><div><h2 id="sectionTitle">值得研究的项目</h2><p id="sectionSubtitle">公开仓库结果 · 数据保存在本地 · 无需登录即可浏览</p></div><div style="display:flex;align-items:center;gap:8px"><button class="refresh-results" id="refreshResults" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5"/></svg><span id="refreshLabel">换一批</span></button><div class="view-toggle"><button class="active" data-view="grid" aria-label="网格视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button data-view="list" aria-label="列表视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div></div></section>
+      <section class="section-head"><div><h2 id="sectionTitle">值得研究的项目</h2><p id="sectionSubtitle">公开仓库结果 · 数据保存在本地 · 无需登录即可浏览</p></div><div style="display:flex;align-items:center;gap:8px"><button class="refresh-results" id="aiFeedBtn" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="8"/></svg><span id="aiFeedLabel">AI 筛选本页</span></button><button class="refresh-results" id="refreshResults" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 11a8 8 0 0 0-14.9-4M4 5v5h5M4 13a8 8 0 0 0 14.9 4M20 19v-5h-5"/></svg><span id="refreshLabel">换一批</span></button><div class="view-toggle"><button class="active" data-view="grid" aria-label="网格视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></button><button data-view="list" aria-label="列表视图"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></button></div></div></section>
       <section class="saved-workspace" id="savedWorkspace" hidden><div><div class="eyebrow" id="savedEyebrow">研究工作区</div><h3 id="savedWorkspaceTitle">把收藏项目变成研究清单</h3><p id="savedWorkspaceCopy">给每个项目标记当前进度，写下下一步想法。现在保存在本地浏览器，登录功能后续加入。</p></div><div class="saved-summary"><div class="saved-summary-item"><strong id="savedTotalCount">00</strong><span id="savedTotalLabel">全部保存</span></div><div class="saved-summary-item"><strong id="savedTryCount">00</strong><span id="savedTryLabel">值得尝试</span></div></div></section>
       <section class="compare-workspace" id="compareWorkspace" hidden><div class="compare-head"><div><div class="eyebrow" id="compareEyebrow">项目对比</div><h3 id="compareWorkspaceTitle">把候选项目放在一起看</h3><p id="compareWorkspaceCopy">从项目卡片加入 2–4 个项目，再用同一组指标快速判断差异。</p></div><div class="compare-actions"><button class="compare-action" id="clearCompare" type="button">清空对比</button><button class="compare-action" id="exportCompare" type="button">导出对比表</button></div></div><div class="compare-selection" id="compareSelection"></div><div id="compareTableMount"></div></section>
       <section class="notes-workspace" id="notesWorkspace" hidden><div class="notes-head"><div><div class="eyebrow" id="notesEyebrow">研究笔记</div><h3 id="notesWorkspaceTitle">把想法留在项目旁边</h3><p id="notesWorkspaceCopy">记录你对项目的判断、问题和下一步计划。笔记目前保存在本地浏览器。</p></div><div class="notes-summary"><div class="note-summary-item"><strong id="notesTotalCount">00</strong><span id="notesTotalLabel">全部笔记</span></div><div class="note-summary-item"><strong id="notesProjectCount">00</strong><span id="notesProjectLabel">关联项目</span></div></div></div><div class="note-editor"><input id="noteTitleInput" type="text" placeholder="笔记标题，例如：适合改造成什么？"><select id="noteProjectInput"><option value="">选择关联项目（可选）</option></select><textarea id="noteContentInput" placeholder="写下你的观察、疑问或下一步计划…"></textarea><div class="note-editor-actions"><button class="note-save" id="noteSave" type="button">保存笔记</button><button class="note-cancel" id="noteCancel" type="button" hidden>取消编辑</button><select class="note-filter" id="noteFilter"><option value="all">查看全部笔记</option></select></div></div><div class="notes-list" id="notesList"></div></section>
@@ -548,7 +550,8 @@
       saved: JSON.parse(localStorage.getItem('os-radar-saved') || '[]'),
       savedMeta: JSON.parse(localStorage.getItem('os-radar-saved-meta') || '{}'), compare: JSON.parse(localStorage.getItem('os-radar-compare') || '[]'), notes: JSON.parse(localStorage.getItem('os-radar-notes') || '[]'), noteFilter: 'all', editingNoteId: null, compareView: false, notesView: false, activeProject: null,
       language: localStorage.getItem('os-radar-language') || 'zh',
-      theme: localStorage.getItem('os-radar-theme') || 'dark'
+      theme: localStorage.getItem('os-radar-theme') || 'dark',
+      aiResults: JSON.parse(localStorage.getItem('os-radar-ai-results') || '{}')
     };
 
     const copy = {
@@ -635,6 +638,12 @@
       const tags = topics.slice(0, 3).map((topic) => topic.replace(/[-_]/g, ' '));
       if (!tags.length && repo.language) tags.push(repo.language);
       const description = cleanRepositoryDescription(repo.description);
+      const activityAgeHours = repo.pushed_at ? Math.max(0, (Date.now() - Date.parse(repo.pushed_at)) / 3600000) : 720;
+      const activityScore = Math.max(20, 100 - Math.min(80, activityAgeHours / 3));
+      const popularityScore = Math.min(100, Math.log10((repo.stargazers_count || 1) + 1) * 25);
+      const forkScore = Math.min(100, Math.log10((repo.forks_count || 1) + 1) * 30);
+      const documentationScore = (repo.description ? 35 : 0) + (topics.length ? 25 : 0) + (repo.has_wiki ? 20 : 0) + (repo.license ? 20 : 0);
+      const signal = Math.round(activityScore * 0.38 + popularityScore * 0.25 + forkScore * 0.12 + documentationScore * 0.15 + (repo.archived ? 0 : 10));
       return {
         id: `github-${repo.id}`, name: repo.name, owner: repo.owner?.login || 'github',
         icon: (repo.name || 'GH').slice(0, 2).toUpperCase(),
@@ -642,7 +651,9 @@
         language: repo.language || 'Unknown', stars: repo.stargazers_count || 0, forks: repo.forks_count || 0,
         license: repo.license?.spdx_id || repo.license?.name || 'No license', topics, readme: null,
         updated: repo.updated_at ? new Date(repo.updated_at).toLocaleDateString(state.language === 'zh' ? 'zh-CN' : 'en-US') : 'Unknown',
-        signal: Math.min(99, Math.max(50, Math.round((Math.log10((repo.stargazers_count || 1) + 1) * 18) + (repo.archived ? 0 : 18)))),
+        updatedAt: repo.updated_at || '', pushedAt: repo.pushed_at || '',
+        signal: Math.min(99, Math.max(1, signal)),
+        trendRange: repo.pushed_at && new Date(repo.pushed_at).getTime() >= Date.now() - 24 * 60 * 60 * 1000 ? 'day' : 'week',
         action: '二次改造', repo: repo.html_url, scores: { activity: repo.archived ? 35 : 78, docs: repo.has_wiki ? 78 : 62, effort: 68, utility: 76, portfolio: 82 },
         reason: 'Live repository metadata is available. The Agent evaluation layer will add a deeper recommendation in a later version.',
         next: 'Open the repository, inspect its README and live example, then decide whether to use or extend it.'
@@ -679,8 +690,10 @@
 
     async function loadTrending(range, page = 1) {
       const endpoint = `/api/github/trending?range=${range}&page=${page}`;
-      const cutoff = new Date(Date.now() - (range === 'week' ? 7 : 1) * 86400000).toISOString().slice(0, 10);
-      const trendQuery = `stars:>10 pushed:>=${cutoff}`;
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const weekStart = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+      const weekEnd = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
+      const trendQuery = range === 'week' ? `stars:>10 pushed:${weekStart}..${weekEnd}` : `stars:>10 pushed:>=${yesterday}`;
       const directQuery = `q=${encodeURIComponent(trendQuery)}&sort=stars&order=desc&per_page=12&page=${page}`;
       const payload = await requestJsonWithFallback(apiUrl(endpoint), `https://api.github.com/search/repositories?${directQuery}`);
       return Array.isArray(payload.items) ? payload.items.map(mapGitHubRepository) : [];
@@ -713,6 +726,71 @@
       } finally {
         $('#refreshResults').disabled = false;
         $('#refreshResults').classList.remove('loading');
+        render();
+      }
+    }
+
+    function aiCacheKey(project) { return `${state.language}:${project.id}`; }
+    function getCachedAiResult(project) {
+      const item = state.aiResults[aiCacheKey(project)];
+      return item && Date.now() - item.savedAt < 24 * 60 * 60 * 1000 ? item.result : null;
+    }
+    function saveCachedAiResult(project, result) {
+      state.aiResults[aiCacheKey(project)] = { savedAt: Date.now(), result };
+      localStorage.setItem('os-radar-ai-results', JSON.stringify(state.aiResults));
+    }
+    function aiDecisionLabel(result) {
+      const labels = state.language === 'zh' ? { direct_use: '可以直接了解', extend: '值得二次改造', borrow_ui: '适合借鉴界面', skip_for_now: '暂时不用研究' } : { direct_use: 'Worth trying', extend: 'Worth extending', borrow_ui: 'Borrow the UI', skip_for_now: 'Skip for now' };
+      return labels[result?.decision] || (state.language === 'zh' ? '已完成初筛' : 'Screened');
+    }
+    function aiCardText(project) {
+      const result = getCachedAiResult(project);
+      if (!result) return '';
+      return `<div class="project-ai-result"><strong>AI 初筛 · ${aiDecisionLabel(result)}</strong><br>${result.summary || result.recommendation || ''}</div>`;
+    }
+
+    async function screenFeedProject(project) {
+      const cached = getCachedAiResult(project);
+      if (cached) return cached;
+      const readme = await loadProjectReadme(project);
+      const response = await fetch(apiUrl('/api/agent/analyze'), {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ language: state.language, repository: { name: project.name, owner: project.owner, description: project.description, language: project.language, stars: project.stars, forks: project.forks, license: project.license, topics: project.topics, updated: project.updated, url: project.repo }, readme: readme.slice(0, 7000) })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Agent screening failed');
+      saveCachedAiResult(project, result);
+      return result;
+    }
+
+    async function loadProjectReadme(project) {
+      if (!project.repo.startsWith('https://github.com/')) return '';
+      const parts = new URL(project.repo).pathname.split('/').filter(Boolean);
+      if (parts.length < 2) return '';
+      const proxyUrl = apiUrl(`/api/github/readme?owner=${encodeURIComponent(parts[0])}&repo=${encodeURIComponent(parts[1])}`);
+      const response = await fetch(proxyUrl);
+      return response.ok ? response.text() : '';
+    }
+
+    async function screenCurrentFeed() {
+      if (!(state.feed === 'day' || state.feed === 'week') || !activeProjects.length) return;
+      const button = $('#aiFeedBtn');
+      const label = $('#aiFeedLabel');
+      button.disabled = true;
+      label.textContent = state.language === 'zh' ? 'AI 正在筛选…' : 'AI screening…';
+      $('#agentMessage').textContent = state.language === 'zh' ? '正在读取前 3 个项目的公开资料，逐个进行 AI 初筛。' : 'Reading the public materials for the first 3 projects and screening them one by one.';
+      try {
+        for (const project of activeProjects.slice(0, 3)) {
+          await screenFeedProject(project);
+          render();
+        }
+        showToast(state.language === 'zh' ? '本页前 3 个项目已完成 AI 初筛' : 'The first 3 projects have been screened');
+        $('#agentMessage').textContent = state.language === 'zh' ? 'AI 初筛已完成；结果已保存 24 小时，重复查看不会再次消耗额度。' : 'AI screening is complete; results are cached for 24 hours.';
+      } catch (error) {
+        showToast(state.language === 'zh' ? `AI 初筛未完成：${error.message}` : `AI screening stopped: ${error.message}`);
+      } finally {
+        button.disabled = false;
+        label.textContent = state.language === 'zh' ? 'AI 筛选本页' : 'AI screen this page';
         render();
       }
     }
@@ -804,8 +882,8 @@
         return matchQuery && matchFilter && matchSaved && matchSavedStatus;
       });
       if (state.sort === 'stars') items.sort((a, b) => b.stars - a.stars);
-      if (state.sort === 'recent') items.sort((a, b) => a.updated.localeCompare(b.updated));
-      if (state.sort === 'signal') items.sort((a, b) => b.signal - a.signal);
+      if (state.sort === 'recent') items.sort((a, b) => (Date.parse(b.pushedAt || b.updatedAt || 0) || 0) - (Date.parse(a.pushedAt || a.updatedAt || 0) || 0));
+      if (state.sort === 'signal') items.sort((a, b) => (b.signal - a.signal) || (b.stars - a.stars));
       return items;
     }
 
@@ -816,6 +894,7 @@
       $('#savedWorkspace').hidden = !savedView;
       $('#savedToolbar').hidden = !savedView;
       $('#discoverToolbar').hidden = savedView;
+      $('#aiFeedBtn').hidden = !(state.feed === 'day' || state.feed === 'week');
       renderNotesWorkspace();
       if (savedView) {
         const savedProjects = activeProjects.filter((project) => state.saved.includes(project.id));
@@ -832,6 +911,7 @@
           <h3 class="project-name">${project.name}</h3><div class="project-owner project-owner-main">${project.owner} / ${state.language === 'zh' ? '公开仓库' : 'public repository'}</div>
           <p class="project-desc ${project.descriptionSuspicious ? 'is-suspicious' : ''}">${project.cardDescription || localized.description}</p>
           <p class="project-zh-summary"><strong>${state.language === 'zh' ? '中文说明：' : 'Plain summary: '}</strong>${state.language === 'zh' ? getCardPlainSummary(project) : (project.cardDescription || localized.description)}</p>
+          ${aiCardText(project)}
           <div class="tag-row"><span class="tag accent">${project.language}</span>${project.tags.map((tag) => `<span class="tag ${tag === 'AI' ? 'lime' : ''}">${tag}</span>`).join('')}</div>
           <div class="project-meta"><div class="meta-item"><small>${state.language === 'zh' ? '信号' : 'Signal'}</small><strong style="color:var(--lime)">${project.signal}</strong></div><div class="meta-item"><small>Star</small><strong>★ ${formatNumber(project.stars)}</strong></div><div class="meta-item"><small>${state.language === 'zh' ? 'Fork' : 'Forks'}</small><strong>${formatNumber(project.forks || 0)}</strong></div></div>
           <div class="project-owner project-owner-facts">${state.language === 'zh' ? '更新' : 'Updated'} ${project.updated} · ${project.license || (state.language === 'zh' ? '许可证待确认' : 'License unconfirmed')}</div>
@@ -1037,7 +1117,7 @@
       $('#stepOne').textContent = t.steps[0]; $('#stepTwo').textContent = t.steps[1]; $('#stepThree').textContent = t.steps[2]; $('#stepFour').textContent = t.steps[3];
        $('#statScanned').textContent = t.scanned; $('#statSaved').textContent = t.savedCount; $('#statBuildable').textContent = t.buildable; $('#statLocal').textContent = t.local; $('#statSignal').textContent = t.highSignal; $('#statService').textContent = state.language === 'zh' ? '使用方式' : 'Access'; $('#statMode').textContent = state.language === 'zh' ? '访客模式' : 'Guest'; $('#statConfig').textContent = state.language === 'zh' ? '无需登录' : 'No login';
       $('#sectionTitle').textContent = state.feed === 'day' ? t.daily : state.feed === 'week' ? t.weekly : t.section; $('#sectionSubtitle').textContent = state.feed === 'discover' ? t.subtitle : (state.language === 'zh' ? '根据 GitHub 近期活跃度筛选 · 点击分析项目后再调用 Agent' : 'Filtered by recent GitHub activity · Agent runs only after you click Analyze.'); $('#footerNote').textContent = t.footer; $('#refreshLabel').textContent = t.refresh;
-      $('#recommendationTitle').textContent = t.recommendation; $('#scoreTitle').textContent = t.score; $('#scoreHelp').textContent = t.scoreHelp; $('#nextTitle').textContent = t.next; $('#chatTitle').textContent = t.chatTitle; $('#chatInput').placeholder = t.chatPlaceholder; $('#chatSend').textContent = t.chatSend; $('#chatNote').textContent = t.chatNote; $('#drawerRepo').textContent = t.repo; $('#drawerSave').textContent = t.save;
+      $('#aiFeedLabel').textContent = state.language === 'zh' ? 'AI 筛选本页' : 'AI screen this page'; $('#recommendationTitle').textContent = t.recommendation; $('#scoreTitle').textContent = t.score; $('#scoreHelp').textContent = t.scoreHelp; $('#nextTitle').textContent = t.next; $('#chatTitle').textContent = t.chatTitle; $('#chatInput').placeholder = t.chatPlaceholder; $('#chatSend').textContent = t.chatSend; $('#chatNote').textContent = t.chatNote; $('#drawerRepo').textContent = t.repo; $('#drawerSave').textContent = t.save;
       $('#savedWorkspaceTitle').textContent = t.savedWorkspaceTitle; $('#savedWorkspaceCopy').textContent = t.savedWorkspaceCopy; $('#savedEyebrow').textContent = t.savedWorkspace; $('#savedTotalLabel').textContent = t.savedTotalLabel; $('#savedTryLabel').textContent = t.savedTryLabel; $('#savedExport').textContent = t.savedExport; $('#notesWorkspaceTitle').textContent = t.notesWorkspaceTitle; $('#notesWorkspaceCopy').textContent = t.notesWorkspaceCopy; $('#notesEyebrow').textContent = t.notesWorkspace; $('#notesTotalLabel').textContent = t.notesTotalLabel; $('#notesProjectLabel').textContent = t.notesProjectLabel; $('#noteSave').textContent = state.editingNoteId ? t.noteUpdate : t.noteSave; $('#noteCancel').textContent = t.noteCancel; $('#compareWorkspaceTitle').textContent = t.compareWorkspaceTitle; $('#compareWorkspaceCopy').textContent = t.compareWorkspaceCopy; $('#compareEyebrow').textContent = t.compareWorkspace; $('#clearCompare').textContent = t.compareClear; $('#exportCompare').textContent = t.compareExport; document.querySelectorAll('[data-saved-status]').forEach((button) => { const labels = { all: t.savedAll, unresearched: t.savedUnresearched, trying: t.savedTry, skipped: t.savedSkip, done: t.statusDone }; button.textContent = labels[button.dataset.savedStatus] || button.textContent; });
       document.querySelector('[data-filter="all"]').textContent = t.all; document.querySelector('[data-filter="Productivity"]').textContent = t.productivity; document.querySelector('[data-filter="Dashboard"]').textContent = t.dashboard; document.querySelector('[data-filter="Local-first"]').textContent = t.localFirst;
       const options = $('#sortSelect').options; options[0].textContent = t.sortSignal; options[1].textContent = t.sortStars; options[2].textContent = t.sortRecent;
@@ -1065,6 +1145,7 @@
     $('#themeToggle').addEventListener('click', () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; applyTheme(); showToast(state.theme === 'light' ? (state.language === 'zh' ? '已切换到浅色主题' : 'Switched to light theme') : (state.language === 'zh' ? '已切换到深色主题' : 'Switched to dark theme')); });
     $('#languageToggle').addEventListener('click', () => { state.language = state.language === 'zh' ? 'en' : 'zh'; applyLanguage(); updateNavigationLabel(); showToast(state.language === 'zh' ? '已切换为中文' : 'Switched to English'); });
     $('#searchBtn').addEventListener('click', () => runSearch());
+    $('#aiFeedBtn').addEventListener('click', screenCurrentFeed);
     $('#refreshResults').addEventListener('click', () => state.feed === 'day' || state.feed === 'week' ? loadFeed(state.feed, Math.min(state.feedPage + 1, 3)) : runSearch({ more: true }));
     $('#searchInput').addEventListener('keydown', (event) => { if (event.key === 'Enter') runSearch(); });
     document.querySelectorAll('.quick-chip').forEach((chip) => chip.addEventListener('click', () => { $('#searchInput').value = chip.dataset.query; runSearch(); }));
